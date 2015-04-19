@@ -24,3 +24,4 @@ demoApp.config(['$routeProvider', function($routeProvider) {
     redirectTo: '/settings'
   });
 }]);
+
