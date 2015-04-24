@@ -1,27 +1,27 @@
 // var demoApp = angular.module('demoApp', ['demoControllers']);
 
-var demoApp = angular.module('demoApp', ['ngRoute', 'demoControllers', 'demoServices']);
+var fandomApp = angular.module('fandomApp', ['ngRoute', 'fandomControllers', 'demoServices']);
 
-demoApp.config(['$routeProvider', function($routeProvider) {
+fandomApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider.
-    when('/firstview', {
-    templateUrl: 'partials/firstview.html',
-    controller: 'FirstController'
+  when('/login', {
+        templateUrl: 'partials/login.html',
+        controller: 'loginController'
   }).
-  when('/secondview', {
-    templateUrl: 'partials/secondview.html',
-    controller: 'SecondController'
+  when('/profile', {
+        templateUrl: 'partials/profile.html',
+        controller: 'profileController'
   }).
-  when('/settings', {
-    templateUrl: 'partials/settings.html',
-    controller: 'SettingsController'
+  when('/signup', {
+        templateUrl: 'partials/signup.html',
+        controller: 'signupController'
   }).
-  when('/llamalist', {
-    templateUrl: 'partials/llamalist.html',
-    controller: 'LlamaListController'
+  when('/home', {
+        templateUrl: 'partials/home.html',
+        controller: 'homeController'
   }).
   otherwise({
-    redirectTo: '/settings'
+    redirectTo: '/home'
   });
 }]);
 

@@ -1,0 +1,16 @@
+<h1>Profile Page</h1>
+<a ng-click="logout()" class="button small" ng-show="profile">Logout</a>
+
+<!-- PROFILE INFORMATION -->
+<div class="well" ng-show="profile">
+    <p>
+        <strong>id</strong>: {{user._id}}<br>
+        <strong>email</strong>: {{user.local.email}}<br>
+        <strong>password</strong>: {{user.local.password}}
+    </p>
+</div>
+
+<div class="jumbotron text-center" ng-hide="profile">
+    <a href="#/login" class="button">Login</a>
+    <a href="#/signup" class="button">Signup</a>
+</div>

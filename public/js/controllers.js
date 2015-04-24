@@ -1,13 +1,14 @@
-var passportApp = angular.module('passportApp', []);
 
-passportApp.controller('profileController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+var fandomControllers = angular.module('fandomControllers', []);
+
+fandomControllers.controller('profileController', ['$scope', '$http', '$window', function($scope, $http, $window) {
   $http.defaults.withCredentials = true; //required so that http will send the authentication cookies with request
 
   $scope.logout = function () {
     $http.get('http://localhost:4000/api/logout').success(function(data) {
       console.log(data);
       if(!data.error) {
-        $window.location = '/login.html'; //redirect
+        $window.location = '#/login'; //redirect
       }
     });
   };
@@ -23,7 +24,7 @@ passportApp.controller('profileController', ['$scope', '$http', '$window', funct
   });
 }]);
 
-passportApp.controller('loginController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+fandomControllers.controller('loginController', ['$scope', '$http', '$window', function($scope, $http, $window) {
 
   $http.defaults.withCredentials = true; //required so that http will send the authentication cookies with request
   $scope.login = function () {
@@ -37,7 +38,7 @@ passportApp.controller('loginController', ['$scope', '$http', '$window', functio
     }).
         success(function(data, status, headers, config) {
           console.log("POST to Login returned good: " + data + "status: " + status);
-          $window.location = '/profile.html';
+          $window.location = '#/profile';
 
         }).
         error(function(data, status, headers, config) {
@@ -48,7 +49,7 @@ passportApp.controller('loginController', ['$scope', '$http', '$window', functio
 }
 ]);
 
-passportApp.controller('signupController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+fandomControllers.controller('signupController', ['$scope', '$http', '$window', function($scope, $http, $window) {
 
   $http.defaults.withCredentials = true; //required so that http will send the authentication cookies with request
   $scope.signup = function () {
@@ -62,7 +63,7 @@ passportApp.controller('signupController', ['$scope', '$http', '$window', functi
     }).
         success(function(data, status, headers, config) {
           console.log("POST to signup was good: " + data + "status: " + status);
-          $window.location = '/profile.html'; //redirect
+          $window.location = '#/profile'; //redirect
 
         }).
         error(function(data, status, headers, config) {
@@ -72,3 +73,5 @@ passportApp.controller('signupController', ['$scope', '$http', '$window', functi
   }
 }
 ]);
+
+
