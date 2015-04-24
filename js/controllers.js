@@ -1,11 +1,12 @@
-
 var fandomControllers = angular.module('fandomControllers', []);
+
+var apiLocation = 'http://localhost:4000/api';
 
 fandomControllers.controller('profileController', ['$scope', '$http', '$window', function($scope, $http, $window) {
   $http.defaults.withCredentials = true; //required so that http will send the authentication cookies with request
 
   $scope.logout = function () {
-    $http.get('http://localhost:4000/api/logout').success(function(data) {
+    $http.get(apiLocation + '/logout').success(function(data) {
       console.log(data);
       if(!data.error) {
         $window.location = '#/login'; //redirect
@@ -14,7 +15,7 @@ fandomControllers.controller('profileController', ['$scope', '$http', '$window',
   };
 
   $scope.profile = false;
-  $http.get('http://localhost:4000/api/profile').success(function(data) {
+  $http.get(apiLocation + '/profile').success(function(data) {
     console.log(data);
     if(!data.error) {
       $scope.profile = true;
@@ -29,11 +30,10 @@ fandomControllers.controller('loginController', ['$scope', '$http', '$window', f
   $http.defaults.withCredentials = true; //required so that http will send the authentication cookies with request
   $scope.login = function () {
 
-    var baseUrl = 'http://localhost:4000';
     data =  $http({
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      url: baseUrl+'/api/login/',
+      url: apiLocation + '/login/',
       data: $.param({email: $scope.email, password: $scope.password})
     }).
         success(function(data, status, headers, config) {
@@ -54,11 +54,10 @@ fandomControllers.controller('signupController', ['$scope', '$http', '$window', 
   $http.defaults.withCredentials = true; //required so that http will send the authentication cookies with request
   $scope.signup = function () {
 
-    var baseUrl = 'http://localhost:4000';
     data =  $http({
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      url: baseUrl+'/api/signup/',
+      url: apiLocation + '/signup/',
       data: $.param({email: $scope.email, password: $scope.password})
     }).
         success(function(data, status, headers, config) {
@@ -74,4 +73,6 @@ fandomControllers.controller('signupController', ['$scope', '$http', '$window', 
 }
 ]);
 
+fandomControllers.controller('homeController', ['$scope', '$http', '$window', function($scope, $http, $window) {
 
+}]);
