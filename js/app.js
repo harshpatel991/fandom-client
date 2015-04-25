@@ -20,6 +20,10 @@ fandomApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'partials/home.html',
         controller: 'homeController'
   }).
+  when('/show', {
+      templateUrl: 'partials/show.html',
+      controller: 'showController'
+  }).
   otherwise({
     redirectTo: '/home'
   });
