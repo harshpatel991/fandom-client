@@ -97,10 +97,22 @@ fandomControllers.controller('showController', ['$scope', '$http', '$window', fu
 }]);
 
 
-fandomControllers.controller('episodeController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+fandomControllers.controller('episodeController', ['$scope', '$routeParams', 'CommentsService', function($scope, $routeParams, Comments) {
 
 	//TODO: replace with API call
 	$scope.episode = {"_id": 63414,"air_date": "2013-10-15","episode_number": 4,"imdb_rating": 9,"img_url": "http://image.tmdb.org/t/p/w780/v4qhQJMjdCtmO2aoUsMW4lGNXiK.jpg","name": "Eye Spy","season_number": 1,"show_id": 1403,"summary": "Agent Coulson and the S.H.I.E.L.D. team try to track down a mysterious woman who has single-handedly committed numerous high-stakes heists. But when the woman\u2019s identity is revealed, a troubling secret stands to ruin Coulson."}
+
+
+	$scope.comments = Comments.getComments($routeParams.ep_id,
+		function(data){ //onSuccess
+
+		},
+		function(data) { //onFailure
+
+		}
+	);
+
+
 
 	$scope.showReplyBox = [];
 	$scope.parentReplyBox = false;
@@ -118,7 +130,13 @@ fandomControllers.controller('episodeController', ['$scope', '$http', '$window',
 
 	$scope.postReply = function(id) {
 
-		//Comments.addComment()
+		Comments.addComment(commentText, poster, postTime, episodeId, parentId,
+			function(data) { //onSuccess
 
+			},
+			function(data) { //onFailure
+
+			}
+		);
 	};
 }]);

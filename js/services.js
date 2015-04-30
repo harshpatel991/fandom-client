@@ -64,11 +64,33 @@ angular.module('fandomServices', [])
             }
         }
     })
-    .factory( 'CommentsService', function($http, $window) {
+    .factory( 'CommentsService', function($http) {
         return {
-            addComment: function() {
+            addComment: function(commentText, poster, postTime, episodeId, parentId, onSuccess, onError) {
+
+                $http({
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    url: apiLocation + '/show_comments/' + episodeId,
+                    data: $.param({text: commentText, poster: poster, post_time: postTime, parent_id: parentId })
+                })
+                .success(function(data, status, headers, config) {
+                    onSuccess(data);
+                })
+                .error(function(data, status, headers, config) {
+                    onError(data);
+                });
+            },
+            getComments: function(episodeId) {
+
+                $http.get(apiLocation + '/show_comments/'+episodeId)
+                .success(function(data, status, headers, config) {
+                    onSuccess(data);
+                })
+                .error(function(data, status, headers, config) {
+                    onError(data);
+                });
 
             }
-
         }
     });
