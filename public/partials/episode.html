@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col-sm-4">
+        <img class="show-image" src="http://image.tmdb.org/t/p/w780/pyp0LgtqjgaeXzPMtXKnkuNBugV.jpg">
+    </div>
+
+    <div class="col-sm-8">
+        <h1>{{episode.name}}</h1>
+        {{episode.summary}}
+        <hr>
+        <b>Air Date: </b> {{episode.air_date}}
+
+        <input id="input-id" type="number" class="rating" step="1" size="xs" data-show-caption="false" data-show-clear="false" data-size="xs" data-rtl="false">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <h2>Comments</h2>
+        <button class="btn btn-default pull-right" ng-click="clickReply(-1)">Reply</button>
+
+        <div id="comment--1"></div>
+
+
+    </div>
+</div>

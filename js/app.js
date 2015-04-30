@@ -1,6 +1,6 @@
 // var demoApp = angular.module('demoApp', ['demoControllers']);
 
-var fandomApp = angular.module('fandomApp', ['ngRoute', 'fandomControllers', 'demoServices']);
+var fandomApp = angular.module('fandomApp', ['ngRoute', 'fandomControllers', 'fandomServices']);
 
 fandomApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider.
@@ -20,9 +20,13 @@ fandomApp.config(['$routeProvider', function($routeProvider) {
         templateUrl: 'partials/home.html',
         controller: 'homeController'
   }).
-  when('/show', {
+  when('/show/:show_id', {
       templateUrl: 'partials/show.html',
       controller: 'showController'
+  }).
+  when('/episode/:episode_id', {
+      templateUrl: 'partials/episode.html',
+      controller: 'episodeController'
   }).
   otherwise({
     redirectTo: '/home'

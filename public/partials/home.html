@@ -17,62 +17,20 @@
     </div>
 
     <div class="col-md-8 col-sm-12">
-
         <div class="row">
-
-            <!--Repeat this for each image-->
             <div class="block-grid-xs-2 block-grid-sm-3">
-                <div class="block-grid-item">
+
+                <div class="block-grid-item" ng-repeat="show in shows">
                     <div class="thumbnail">
-                        <img src="./data/images/game_of_thrones.jpg">
+                        <img ng-src="./data/images/{{show.img_filename}}">
                         <div class="caption">
-                            <a href="#/show"><h3>Game Of Thrones</h3></a>
+                            <a href="#/show/{{show._id}}"><h3>{{show.name}}</h3></a>
                         </div>
                     </div>
                 </div>
-
-                <div class="block-grid-item">
-                    <div class="thumbnail">
-                        <img src="./data/images/house.jpg">
-                        <div class="caption">
-                            <h3>House</h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="block-grid-item">
-                    <div class="thumbnail">
-                        <img src="./data/images/friends.jpg">
-                        <div class="caption">
-                            <a href="#/show"><h3>Friends</h3></a>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="block-grid-item">
-                    <div class="thumbnail">
-                        <img src="./data/images/qi.jpg">
-                        <div class="caption">
-                            <h3>Qi</h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="block-grid-item">
-                    <div class="thumbnail">
-                        <img src="./data/images/community.jpg">
-                        <div class="caption">
-                            <h3>Community</h3>
-                        </div>
-                    </div>
-                </div>
-
 
             </div>
-
         </div>
-
     </div>
 
 </div>

@@ -1,69 +1,36 @@
 <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-4">
         <a href="#">
-            <img class="show-image" src="./data/images/game_of_thrones.jpg">
+            <img class="show-image" src="./data/images/{{show.img_filename}}">
         </a>
     </div>
     <div class="col-sm-8">
 
-        <h1 class="media-heading">Game Of Thrones</h1>
-        Blah blah blah dragons blah blah fighting blah blah war blah blah
+        <h1>{{show.name}}</h1>
+        {{show.summary}}
+
+        <hr>
+        <b>Cast: </b> <span ng-repeat="castMember in show.cast">{{castMember}} </span>
+        <hr>
+        <b>Network: </b> <span ng-repeat="network in show.networks">{{network}}</span>
+        <hr>
+        <div class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add To Favorites</div>
     </div>
 </div>
 
 <div class="row">
     <div class="col-sm-12">
-        <hr>
-        <h2 class="media-heading">Season 1</h2>
-            <h4>Episode 1</h4>
-            <h4>Episode 2</h4>
-            <h4>Episode 3</h4>
-            <h4>Episode 4</h4>
-            <h4>Episode 5</h4>
-            <h4>Episode 6</h4>
-            <h4>Episode 7</h4>
-            <h4>Episode 8</h4>
-            <h4>Episode 9</h4>
-            <h4>Episode 10</h4>
+
+        <div ng-repeat="seasonShows in allEpisodes">
+
+        <h2 class="media-heading">{{allSeasons[$index]}}</h2>
+            <a ng-repeat="show in seasonShows track by $index" href="#/episode/{{show._id}}"><h4>{{show.name}}</h4></a>
+
+
             <hr>
 
-        <h2 class="media-heading">Season 2</h2>
-            <h4>Episode 1</h4>
-            <h4>Episode 2</h4>
-            <h4>Episode 3</h4>
-            <h4>Episode 4</h4>
-            <h4>Episode 5</h4>
-            <h4>Episode 6</h4>
-            <h4>Episode 7</h4>
-            <h4>Episode 8</h4>
-            <h4>Episode 9</h4>
-            <h4>Episode 10</h4>
-            <hr>
+        </div>
 
-        <h2 class="media-heading">Season 3</h2>
-            <h4>Episode 1</h4>
-            <h4>Episode 2</h4>
-            <h4>Episode 3</h4>
-            <h4>Episode 4</h4>
-            <h4>Episode 5</h4>
-            <h4>Episode 6</h4>
-            <h4>Episode 7</h4>
-            <h4>Episode 8</h4>
-            <h4>Episode 9</h4>
-            <h4>Episode 10</h4>
-            <hr>
-
-        <h2 class="media-heading">Season 4</h2>
-            <h4>Episode 1</h4>
-            <h4>Episode 2</h4>
-            <h4>Episode 3</h4>
-            <h4>Episode 4</h4>
-            <h4>Episode 5</h4>
-            <h4>Episode 6</h4>
-            <h4>Episode 7</h4>
-            <h4>Episode 8</h4>
-            <h4>Episode 9</h4>
-            <h4>Episode 10</h4>
 
     </div>
 </div>
