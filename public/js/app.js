@@ -24,7 +24,7 @@ fandomApp.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'partials/show.html',
       controller: 'showController'
   }).
-  when('/episode/:episode_id', {
+  when('/episode/:ep_id', {
       templateUrl: 'partials/episode.html',
       controller: 'episodeController'
   }).

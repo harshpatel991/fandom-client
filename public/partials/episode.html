@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-sm-4">
-        <img class="show-image" src="http://image.tmdb.org/t/p/w780/pyp0LgtqjgaeXzPMtXKnkuNBugV.jpg">
+        <img class="show-image" ng-src="{{episode.img_url}}">
     </div>
 
     <div class="col-sm-8">
@@ -16,9 +16,30 @@
 <div class="row">
     <div class="col-sm-12">
         <h2>Comments</h2>
-        <button class="btn btn-default pull-right" ng-click="clickReply(-1)">Reply</button>
+        <button class="btn btn-default pull-right" ng-click="clickReply(-1)" ng-show="user">Reply</button>
 
-        <div id="comment--1"></div>
+        <div ng-show="showParentReplyBox">
+            <textarea ng-model="parentReplyBoxText"></textarea>
+            <button ng-click="submitParentComment(-1)" class="btn btn-primary">Submit</button>
+            <button ng-click="hideCommentBox(-1)" class="btn btn-primary">Cancel</button>
+        </div>
+
+        <div class="comment" ng-repeat="comment in comments" id="{{comment.id}}" ng-class="{childComment: comment.parent_id != -1}">
+            {{comment.text}} <br>
+            {{comment.poster}} <br>
+            {{comment.post_time}} <br>
+            {{comment.parent_id}} <br>
+            <button ng-click="clickReply($index)" class="btn btn-primary btn-sm" ng-show="user && comment.parent_id == -1">Reply</button>
+
+
+            <div ng-show="showReplyBox[$index]">
+                <textarea ng-model="replyBoxText[$index]"></textarea> <br>
+                <button ng-click="submitReplyComment($index)" class="btn btn-primary btn-sm">Submit</button>
+                <button ng-click="hideCommentBox($index)" class="btn btn-danger btn-sm">Cancel</button>
+            </div>
+
+            <hr>
+        </div>
 
 
     </div>

@@ -66,7 +66,8 @@ angular.module('fandomServices', [])
     })
     .factory( 'CommentsService', function($http) {
         return {
-            addComment: function(commentText, poster, postTime, episodeId, parentId, onSuccess, onError) {
+            addComment: function(commentText, poster, episodeId, parentId, onSuccess, onError) {
+                var postTime = Date();
 
                 $http({
                     method: 'POST',
@@ -75,17 +76,17 @@ angular.module('fandomServices', [])
                     data: $.param({text: commentText, poster: poster, post_time: postTime, parent_id: parentId })
                 })
                 .success(function(data, status, headers, config) {
-                    onSuccess(data);
+                    onSuccess(data["data"]);
                 })
                 .error(function(data, status, headers, config) {
                     onError(data);
                 });
             },
-            getComments: function(episodeId) {
+            getComments: function(episodeId, onSuccess, onError) {
 
                 $http.get(apiLocation + '/show_comments/'+episodeId)
                 .success(function(data, status, headers, config) {
-                    onSuccess(data);
+                    onSuccess(data["data"]);
                 })
                 .error(function(data, status, headers, config) {
                     onError(data);

@@ -97,46 +97,92 @@ fandomControllers.controller('showController', ['$scope', '$http', '$window', fu
 }]);
 
 
-fandomControllers.controller('episodeController', ['$scope', '$routeParams', 'CommentsService', function($scope, $routeParams, Comments) {
+fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$window', 'CommentsService', 'UsersService', function($scope, $routeParams, $window, Comments, Users) {
+	var epId = $routeParams.ep_id;
+
+	Users.getProfile(
+		function(data) { //onSuccess
+			console.log(data);
+
+			$scope.profile = true;
+			$scope.user = data.user;
+		},
+		function() {}//onError
+
+	);
 
 	//TODO: replace with API call
 	$scope.episode = {"_id": 63414,"air_date": "2013-10-15","episode_number": 4,"imdb_rating": 9,"img_url": "http://image.tmdb.org/t/p/w780/v4qhQJMjdCtmO2aoUsMW4lGNXiK.jpg","name": "Eye Spy","season_number": 1,"show_id": 1403,"summary": "Agent Coulson and the S.H.I.E.L.D. team try to track down a mysterious woman who has single-handedly committed numerous high-stakes heists. But when the woman\u2019s identity is revealed, a troubling secret stands to ruin Coulson."}
+	//$scope.comments = [{text: "This is a comment", poster: "Yo Mama", post_time: "2015-04-11T19:32:12.821", _id:1020, episode_id: 63414, parent_id: -1}, {text: "This is a comment2", poster: "Yo Mama2", post_time: "2015-04-11T19:32:12.821", _id:0921, episode_id: 63414, parent_id: -1}, {text: "This is a comment3", poster: "Yo Mama3", post_time: "2015-04-11T19:32:12.821", _id:475, episode_id: 63414, parent_id: -1}];
 
-
-	$scope.comments = Comments.getComments($routeParams.ep_id,
+	Comments.getComments(epId,
 		function(data){ //onSuccess
-
+			$scope.comments = data;
 		},
 		function(data) { //onFailure
 
 		}
 	);
 
-
-
+	$scope.showParentReplyBox = false;
 	$scope.showReplyBox = [];
-	$scope.parentReplyBox = false;
 
-	$scope.clickReply = function(id) { //when clicking to open reply box to episode or to a comment
+	$scope.parentReplyBoxText;
+	$scope.replyBoxText = [];
+
+	$scope.clickReply = function(id) { //show the comment box
 
 		if(id == -1) {
-			$scope.parentReplyBox = true;
+			$scope.showParentReplyBox = true;
 		}
 		else {
+			console.log("Click reply on" + id);
 			$scope.showReplyBox[id] = true;
 		}
-
 	};
 
-	$scope.postReply = function(id) {
+	$scope.hideCommentBox = function(id) {
+		if(id == -1) {
+			$scope.showParentReplyBox = false;
+			$scope.parentReplyBoxText = ''; //clear out box
+		}
+		else {
+			$scope.showReplyBox[id] = false;
+			$scope.replyBoxText[id] = ''; //clear out box
+		}
+	};
 
-		Comments.addComment(commentText, poster, postTime, episodeId, parentId,
+	$scope.submitParentComment = function() { //adding a new parent level comment
+		var textBoxContent = $scope.parentReplyBoxText;
+
+		Comments.addComment(textBoxContent, $scope.user._id, $scope.episode._id, -1,
 			function(data) { //onSuccess
-
+				console.log("Add parent comment finished: " + data);
+				$scope.comments.unshift(data);
+				$scope.hideCommentBox(-1);
 			},
 			function(data) { //onFailure
-
 			}
 		);
 	};
+
+	$scope.submitReplyComment = function(index) { //adding a new reply to a comment
+
+		var textBoxContent = $scope.replyBoxText[index];
+		console.log("Posting: " + textBoxContent );
+		var replyingTo = $scope.comments[index];
+		Comments.addComment(textBoxContent, $scope.user._id, replyingTo.episode_id, replyingTo._id,
+			function(data) { //onSuccess
+				console.log("Add comment finished: " + data);
+
+				$scope.comments.splice(index+1, 0, data);
+				$scope.hideCommentBox(index);
+			},
+			function(data) { //onFailure
+				console.log("Add comment failed: " + data);
+			}
+		);
+	};
+
+
 }]);
