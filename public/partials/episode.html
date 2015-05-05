@@ -16,6 +16,7 @@
 <div class="row">
     <div class="col-sm-12">
         <h2>Comments</h2>
+        <!-- Add parent Comment -->
         <button class="btn btn-default pull-right" ng-click="clickReply(-1)" ng-show="user">Reply</button>
 
         <div ng-show="showParentReplyBox">
@@ -24,21 +25,24 @@
             <button ng-click="hideCommentBox(-1)" class="btn btn-primary">Cancel</button>
         </div>
 
-        <div class="comment" ng-repeat="comment in comments" id="{{comment.id}}" ng-class="{childComment: comment.parent_id != -1}">
-            {{comment.text}} <br>
-            {{comment.poster}} <br>
-            {{comment.post_time}} <br>
-            {{comment.parent_id}} <br>
-            <button ng-click="clickReply($index)" class="btn btn-primary btn-sm" ng-show="user && comment.parent_id == -1">Reply</button>
-
-
-            <div ng-show="showReplyBox[$index]">
-                <textarea ng-model="replyBoxText[$index]"></textarea> <br>
-                <button ng-click="submitReplyComment($index)" class="btn btn-primary btn-sm">Submit</button>
-                <button ng-click="hideCommentBox($index)" class="btn btn-danger btn-sm">Cancel</button>
+        <!-- All the comment -->
+        <div style="border-bottom: 2px solid #000000" ng-repeat="parentcomment in comments" ng-if="parentcomment.parent_id == -1">
+            <div>
+                <div>{{parentcomment.text}}</div>
+                <div>{{parentcomment.post_time}}</div>
             </div>
-
-            <hr>
+            <div style="margin-left:50px;" ng-repeat="childcomment in comments" ng-if="childcomment.parent_id == parentcomment._id">
+                {{childcomment.text}} <br>
+                {{childcomment.post_time}} <br>
+            </div>
+            <!-- reply button -->
+            <button ng-click="clickReply(1)" class="btn btn-primary btn-sm" ng-show="user">Reply</button>
+            <!-- reply box -->
+            <div ng-show="showChildReplyBox">
+                <textarea ng-model="replyBoxText"></textarea> <br>
+                <button ng-click="submitReplyComment($index)" class="btn btn-primary btn-sm">Submit</button>
+                <button ng-click="hideCommentBox(1)" class="btn btn-danger btn-sm">Cancel</button>
+            </div>
         </div>
 
 

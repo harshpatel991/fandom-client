@@ -94,4 +94,18 @@ angular.module('fandomServices', [])
 
             }
         }
+    })
+
+    .factory('EpisodeService', function($http){
+        return {
+            getEpisode: function(episodeId, onSuccess, onError){
+                $http.get(apiLocation + '/episodes/' + episodeId)
+                .success(function(data, status, headers, config){
+                    onSuccess(data["data"]);
+                })
+                .error(function(data, status, headers, config) {
+                    onError(data);
+                });
+            }
+        }
     });
