@@ -75,12 +75,25 @@ fandomControllers.controller('homeController', ['$scope', '$http', '$window', 'S
 
 }]);
 
-fandomControllers.controller('showController', ['$scope', '$routeParams', '$http', '$window', 'ShowsService', 'SeasonService', 'EpisodeService', function($scope, $routeParams, $http, $window, Shows, Seasons, Episode) {
+fandomControllers.controller('showController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'ShowsService', 'SeasonService', 'EpisodeService', function($scope, $routeParams, $http, $window, Users, Shows, Seasons, Episode) {
 	var showId = $routeParams.show_id;
+	$scope.isInFavorites = false;
+
+	Users.getProfile(
+		function(data) { //onSuccess
+			$scope.profile = true;
+			$scope.user = data.user;
+
+			console.log($scope.user.favorites);
+			checkInFavorites();
+
+		},
+		function() {}//onError
+	);
+
 
 	$scope.allEpisodes = [];
 	$scope.allSeasons = [];
-
 
 	Shows.getShow(showId,
 		function(data){ //onSuccess
@@ -97,7 +110,6 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 						aSeason = seasonsList[i];
 						allEpisodeIds = allEpisodeIds.concat(aSeason.episodes);
 					}
-					console.log(allEpisodeIds);
 					Episode.getEpisodes(allEpisodeIds,
 						function(data) { //onSuccess
 							$scope.allEpisodes = data;
@@ -105,11 +117,52 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 						function(){} //onError
 					);
 				},
-				function(){})
-
+				function(){}//onError
+			);
 		},
 		function(){} //onError
 	);
+
+	$scope.addToFavorites = function() {
+		$scope.user.favorites.push(showId);
+		saveUser();
+	};
+
+	$scope.removeFromFavorites = function() {
+		console.log($scope.user.favorites);
+
+		for (var index = 0; index < $scope.user.favorites.length; index++) { //find the index where this show_id exists and remove it
+			if ($scope.user.favorites[index] == showId) {
+				$scope.user.favorites.splice(index, 1);
+				break;
+			}
+		}
+
+		saveUser();
+	};
+
+	function saveUser() {
+		Users.editUser($scope.user,
+			function(data) { //onSuccess
+				$scope.user = data;
+				checkInFavorites(); //update in favorites status
+				console.log($scope.user.favorites);
+			},
+			function() { //onError
+
+			}
+		);
+	}
+
+	function checkInFavorites() { //check if the current show is in this users favorites
+		$scope.isInFavorites = false;
+		for (var index = 0; index < $scope.user.favorites.length; index++) { //find if the show exists in this array
+			if ($scope.user.favorites[index] == showId) {
+				$scope.isInFavorites = true;
+				break;
+			}
+		}
+	}
 
 }]);
 
@@ -120,8 +173,6 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 
 	Users.getProfile(
 		function(data) { //onSuccess
-			// console.log(data);
-
 			$scope.profile = true;
 			$scope.user = data.user;
 		},

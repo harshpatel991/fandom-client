@@ -61,6 +61,23 @@ angular.module('fandomServices', [])
                 .error(function(data) {
                     onError(data);
                 });
+            },
+
+            editUser: function(user, onSuccess, onError) {
+                $http.defaults.withCredentials = true; //required so that http will send the authentication cookies with request
+                console.log(apiLocation + '/users/'+user._id);
+                $http({
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    url: apiLocation + '/users/'+user._id,
+                    data: $.param(user)
+                })
+                .success(function(data, status, headers, config) {
+                    onSuccess(data["data"]);
+                })
+                .error(function(data, status, headers, config) {
+                    onError(data);
+                });
             }
         }
     })
