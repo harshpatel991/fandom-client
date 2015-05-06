@@ -225,17 +225,18 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 	$scope.points = function(comment_id, type){
 		Comments.voteComments(comment_id, type, 
 			function(data){ //on success
-				console.log("Vote comment finished: " + data);
+				console.log("Vote comment finished: ");
+				console.log(data);
 				//reload the comment
-				// Comments.getComments($scope.episode._id,
-				// 	function(data){ //onSuccess
-				// 		// console.log("load successfully");
-				// 		$scope.comments = data;
-				// 	},
-				// 	function(data) { //onFailure
+				Comments.getComments($scope.episode._id,
+					function(data){ //onSuccess
+						// console.log("load successfully");
+						$scope.comments = data;
+					},
+					function(data) { //onFailure
 
-				// 	}
-				// );
+					}
+				);
 			},
 			function(data){
 				console.log("Vote comment failed: " + data);

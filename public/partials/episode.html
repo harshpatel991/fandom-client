@@ -32,7 +32,7 @@
                 <div>{{parentcomment.post_time}}</div>
             </div>
             <div style="margin-left:50px;" ng-repeat="childcomment in comments" ng-if="childcomment.parent_id == parentcomment._id">
-                <a href="#" ng-click="points(childcomment._id,'increase')">Good</a>{{childcomment.points}}<a href="#" ng-click="points(childcomments._id, 'decrease')">Suck</a>
+                <button ng-click="points(childcomment._id,'increase')">Good</button>{{childcomment.points}}<button ng-click="points(childcomments._id, 'decrease')">Suck</button>
                 {{childcomment.text}} <br>
                 {{childcomment.post_time}} <br>
             </div>
