@@ -64,36 +64,71 @@ fandomControllers.controller('signupController', ['$scope', '$http', '$window', 
 }
 ]);
 
-fandomControllers.controller('homeController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+fandomControllers.controller('homeController', ['$scope', '$http', '$window', 'ShowsService', function($scope, $http, $window, Shows) {
 
-	//TODO: replace below with API call
-	$scope.shows = [{name: "Game Of Thrones", img_filename: "game_of_thrones.jpg", _id: 1918}, {name: "Community", img_filename:"community.jpg", _id:1919 }]
+	Shows.getAllShows(
+		function(data){ //onSuccess
+			$scope.shows = data;
+		},
+		function(){} //onError
+	);
 
 }]);
 
-fandomControllers.controller('showController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+fandomControllers.controller('showController', ['$scope', '$routeParams', '$http', '$window', 'ShowsService', 'SeasonService', 'EpisodeService', function($scope, $routeParams, $http, $window, Shows, Seasons, Episode) {
+	var showId = $routeParams.show_id;
 
-	$scope.show = {"_id": 1918, "cast": ["Bip", "Bop", "Doodle"], "first_date": "1985-09-27","genres": [ "Drama", "Sci-Fi & Fantasy"],"imdb_id": "","imdb_rating": 8,"img_filename": "the_twilight_zone.jpg",
-		"keywords": ["anthology"],"last_date": "1988-11-26","name": "The Twilight Zone","networks": ["CBS"], "num_eps": 114,"num_seasons": 3,"remote_img_url": "http://image.tmdb.org/t/p/w500/gPbXTcnyisKxHi4Owkzi1IEjoHg.jpg","seasons": [5553,5550,5551,5552],"summary": "The Twilight Zone is the first of two revivals of Rod Serling's acclaimed 1950/60s television series of the same name. It ran for two seasons on CBS before producing a final season for syndication."}
+	//$scope.show = {"_id": 1918, "cast": ["Bip", "Bop", "Doodle"], "first_date": "1985-09-27","genres": [ "Drama", "Sci-Fi & Fantasy"],"imdb_id": "","imdb_rating": 8,"img_filename": "the_twilight_zone.jpg",
+	//	"keywords": ["anthology"],"last_date": "1988-11-26","name": "The Twilight Zone","networks": ["CBS"], "num_eps": 114,"num_seasons": 3,"remote_img_url": "http://image.tmdb.org/t/p/w500/gPbXTcnyisKxHi4Owkzi1IEjoHg.jpg","seasons": [5553,5550,5551,5552],"summary": "The Twilight Zone is the first of two revivals of Rod Serling's acclaimed 1950/60s television series of the same name. It ran for two seasons on CBS before producing a final season for syndication."}
+
+	Shows.getShow(showId,
+		function(data){ //onSuccess
+			$scope.show = data;
+
+			console.log($scope.show.seasons);
+			for(var i = 0; i < $scope.show.seasons.length; i++) {
+				console.log($scope.show.seasons[i]);
+
+				var seasonID = $scope.show.seasons[i];
+
+				Seasons.getSeason(seasonID,
+					function(seasonQueryResult) { //onSuccess
+
+						$scope.allSeasons.push(seasonQueryResult.name);
+
+						var seasonsEpisodes = [];
+
+						for (var j = 0; j< seasonQueryResult.episodes.length; j++) { //Query for each episode of each season
+							var episodeId = seasonQueryResult.episodes[j];
+
+							Episode.getEpisode(episodeId, //TODO: only query for the episode title
+								function(episodeQueryResult) { //onSuccess
+									seasonsEpisodes.push(episodeQueryResult);
+								},
+								function() {} //onError
+							);
+
+						}
+
+						$scope.allEpisodes.push(seasonsEpisodes);
+
+					},
+					function() {} //onError
+				);
+
+
+
+			}
+
+		},
+		function(){} //onError
+	);
 
 	//Query for each season
-
 	$scope.allSeasons = [];
 	$scope.allEpisodes = [];
 
-	for(var seasonID in $scope.show.seasons) {
 
-		var seasonQueryResult = {"_id": 3649,"air_date": "2013-08-25","episodes": [63424,1005656],"name": "Season Specials","season_number": 0,"show_id": 1403,"summary": ""};
-		$scope.allSeasons.push(seasonQueryResult.name);
-
-		var seasonsEpisodes = [];
-		for (var episode in seasonQueryResult.episodes) { 	//Query for each episode of each season
-			var episodeQueryResult = {name: "Episode blah", _id: 1234};
-			seasonsEpisodes.push(episodeQueryResult);
-		}
-
-		$scope.allEpisodes.push(seasonsEpisodes);
-	}
 }]);
 
 
@@ -111,11 +146,14 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 		function() {}//onError
 	);
 
-	//TODO: replace with API call
-	$scope.episode = {"_id": 63414,"air_date": "2013-10-15","episode_number": 4,"imdb_rating": 9,"img_url": "http://image.tmdb.org/t/p/w780/v4qhQJMjdCtmO2aoUsMW4lGNXiK.jpg","name": "Eye Spy","season_number": 1,"show_id": 1403,"summary": "Agent Coulson and the S.H.I.E.L.D. team try to track down a mysterious woman who has single-handedly committed numerous high-stakes heists. But when the woman\u2019s identity is revealed, a troubling secret stands to ruin Coulson."}
-	//$scope.comments = [{text: "This is a comment", poster: "Yo Mama", post_time: "2015-04-11T19:32:12.821", _id:1020, episode_id: 63414, parent_id: -1}, {text: "This is a comment2", poster: "Yo Mama2", post_time: "2015-04-11T19:32:12.821", _id:0921, episode_id: 63414, parent_id: -1}, {text: "This is a comment3", poster: "Yo Mama3", post_time: "2015-04-11T19:32:12.821", _id:475, episode_id: 63414, parent_id: -1}];
+	Episode.getEpisode(epId,
+		function(data) { //onSuccess
+			$scope.episode = data;
+		},
+		function() {} //onError
+	);
 
-	Comments.getComments($scope.episode._id,
+	Comments.getComments(epId,
 		function(data){ //onSuccess
 			console.log("load successfully");
 			$scope.comments = data;

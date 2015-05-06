@@ -123,4 +123,42 @@ angular.module('fandomServices', [])
                 });
             }
         }
+    })
+
+
+    .factory('ShowsService', function($http){
+        return {
+            getShow: function(showId, onSuccess, onError){
+                $http.get(apiLocation + '/shows/' + showId)
+                .success(function(data, status, headers, config){
+                    onSuccess(data["data"]);
+                })
+                .error(function(data, status, headers, config) {
+                    onError(data);
+                });
+            },
+            getAllShows: function(onSuccess, onError) {
+                $http.get(apiLocation + '/shows/')
+                .success(function(data, status, headers, config){
+                    onSuccess(data["data"]);
+                })
+                .error(function(data, status, headers, config) {
+                    onError(data);
+                });
+            }
+        }
+    })
+
+    .factory('SeasonService', function($http){
+        return {
+            getSeason: function(seasonId, onSuccess, onError){
+                $http.get(apiLocation + '/seasons/' + seasonId)
+                .success(function(data, status, headers, config){
+                    onSuccess(data["data"]);
+                })
+                .error(function(data, status, headers, config) {
+                    onError(data);
+                });
+            }
+        }
     });
