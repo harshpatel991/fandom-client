@@ -18,18 +18,20 @@
     </div>
 </div>
 
+
 <div class="row">
     <div class="col-sm-12">
 
-        <div ng-repeat="seasonShows in allEpisodes">
+        <div ng-repeat="aSeason in allSeasons">
 
-        <h2 class="media-heading">{{allSeasons[$index]}}</h2>
-            <a ng-repeat="show in seasonShows track by $index" href="#/episode/{{show._id}}"><h4>{{show.name}}</h4></a>
+        <h2 class="media-heading">{{aSeason.name}}</h2>
+            <a ng-repeat="aShow in allEpisodes" ng-if="aShow.season_number == aSeason.season_number" href="#/episode/{{aShow._id}}"><h4>{{aShow.name}}</h4></a>
 
 
             <hr>
 
         </div>
+
 
 
     </div>

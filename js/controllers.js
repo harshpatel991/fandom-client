@@ -78,56 +78,38 @@ fandomControllers.controller('homeController', ['$scope', '$http', '$window', 'S
 fandomControllers.controller('showController', ['$scope', '$routeParams', '$http', '$window', 'ShowsService', 'SeasonService', 'EpisodeService', function($scope, $routeParams, $http, $window, Shows, Seasons, Episode) {
 	var showId = $routeParams.show_id;
 
-	//$scope.show = {"_id": 1918, "cast": ["Bip", "Bop", "Doodle"], "first_date": "1985-09-27","genres": [ "Drama", "Sci-Fi & Fantasy"],"imdb_id": "","imdb_rating": 8,"img_filename": "the_twilight_zone.jpg",
-	//	"keywords": ["anthology"],"last_date": "1988-11-26","name": "The Twilight Zone","networks": ["CBS"], "num_eps": 114,"num_seasons": 3,"remote_img_url": "http://image.tmdb.org/t/p/w500/gPbXTcnyisKxHi4Owkzi1IEjoHg.jpg","seasons": [5553,5550,5551,5552],"summary": "The Twilight Zone is the first of two revivals of Rod Serling's acclaimed 1950/60s television series of the same name. It ran for two seasons on CBS before producing a final season for syndication."}
+	$scope.allEpisodes = [];
+	$scope.allSeasons = [];
+
 
 	Shows.getShow(showId,
 		function(data){ //onSuccess
 			$scope.show = data;
 
-			console.log($scope.show.seasons);
-			for(var i = 0; i < $scope.show.seasons.length; i++) {
-				console.log($scope.show.seasons[i]);
+			//Grab the seasons
+			Seasons.getSeasons($scope.show.seasons,
+				function(seasonsList) {
+					$scope.allSeasons = seasonsList;
 
-				var seasonID = $scope.show.seasons[i];
+					var allEpisodeIds = [];
 
-				Seasons.getSeason(seasonID,
-					function(seasonQueryResult) { //onSuccess
-
-						$scope.allSeasons.push(seasonQueryResult.name);
-
-						var seasonsEpisodes = [];
-
-						for (var j = 0; j< seasonQueryResult.episodes.length; j++) { //Query for each episode of each season
-							var episodeId = seasonQueryResult.episodes[j];
-
-							Episode.getEpisode(episodeId, //TODO: only query for the episode title
-								function(episodeQueryResult) { //onSuccess
-									seasonsEpisodes.push(episodeQueryResult);
-								},
-								function() {} //onError
-							);
-
-						}
-
-						$scope.allEpisodes.push(seasonsEpisodes);
-
-					},
-					function() {} //onError
-				);
-
-
-
-			}
+					for(var i = 0; i<seasonsList.length; i++) {
+						aSeason = seasonsList[i];
+						allEpisodeIds = allEpisodeIds.concat(aSeason.episodes);
+					}
+					console.log(allEpisodeIds);
+					Episode.getEpisodes(allEpisodeIds,
+						function(data) { //onSuccess
+							$scope.allEpisodes = data;
+						},
+						function(){} //onError
+					);
+				},
+				function(){})
 
 		},
 		function(){} //onError
 	);
-
-	//Query for each season
-	$scope.allSeasons = [];
-	$scope.allEpisodes = [];
-
 
 }]);
 

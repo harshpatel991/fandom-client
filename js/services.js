@@ -121,6 +121,15 @@ angular.module('fandomServices', [])
                 .error(function(data, status, headers, config) {
                     onError(data);
                 });
+            },
+            getEpisodes: function(episodeIds, onSuccess, onError){
+                $http.get(apiLocation + '/episodes?where={"_id": {"$in": ['+episodeIds.join()+']}}')
+                    .success(function(data, status, headers, config){
+                        onSuccess(data["data"]);
+                    })
+                    .error(function(data, status, headers, config) {
+                        onError(data);
+                    });
             }
         }
     })
@@ -151,7 +160,7 @@ angular.module('fandomServices', [])
 
     .factory('SeasonService', function($http){
         return {
-            getSeason: function(seasonId, onSuccess, onError){
+            getSeason: function(onSuccess, onError){
                 $http.get(apiLocation + '/seasons/' + seasonId)
                 .success(function(data, status, headers, config){
                     onSuccess(data["data"]);
@@ -159,6 +168,16 @@ angular.module('fandomServices', [])
                 .error(function(data, status, headers, config) {
                     onError(data);
                 });
+            },
+            getSeasons: function(seasonIds, onSuccess, onError){
+                console.log(apiLocation + '/seasons?where={"_id": {"$in": ['+seasonIds.join()+']}}');
+                $http.get(apiLocation + '/seasons?where={"_id": {"$in": ['+seasonIds.join()+']}}')
+                    .success(function(data, status, headers, config){
+                        onSuccess(data["data"]);
+                    })
+                    .error(function(data, status, headers, config) {
+                        onError(data);
+                    });
             }
         }
     });
