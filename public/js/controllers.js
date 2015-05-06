@@ -138,6 +138,10 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 			}
 		}
 
+		if($scope.user.favorites.length === 0) {
+			$scope.user.favorites = [""];
+		}
+
 		saveUser();
 	};
 
