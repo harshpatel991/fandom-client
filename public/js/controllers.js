@@ -126,10 +126,10 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 	);
 
 	$scope.showParentReplyBox = false;
-	$scope.showChildReplyBox = false;
+	$scope.showChildReplyBox=[];
 
 	$scope.parentReplyBoxText;
-	$scope.replyBoxText;
+	$scope.replyBoxText=[];
 
 	$scope.clickReply = function(id) { //show the comment box
 		console.log(id);
@@ -139,7 +139,7 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 		else {
 
 			console.log("Click reply on" + id);
-			$scope.showChildReplyBox = true;
+			$scope.showChildReplyBox[id] = true;
 		}
 	};
 
@@ -149,8 +149,8 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 			$scope.parentReplyBoxText = ''; //clear out box
 		}
 		else {
-			$scope.showChildReplyBox = false;
-			$scope.replyBoxText = ''; //clear out box
+			$scope.showChildReplyBox[id] = false;
+			$scope.replyBoxText[id] = ''; //clear out box
 		}
 	};
 
@@ -168,19 +168,39 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 		);
 	};
 
-	$scope.submitReplyComment = function(index) { //adding a new reply to a comment
-		var textBoxContent = $scope.replyBoxText[index];
-		console.log("Posting: " + textBoxContent );
-		var replyingTo = $scope.comments[index];
-		Comments.addComment(textBoxContent, $scope.user._id, replyingTo.episode_id, replyingTo._id,
+	$scope.submitReplyComment = function(id) { //adding a new reply to a comment
+		var textBoxContent = $scope.replyBoxText[id];
+		console.log("Posting: " + $scope.replyBoxText[id]);
+		var replyingTo = $scope.comments[id];
+		Comments.addComment(textBoxContent, $scope.user._id, $scope.episode._id, replyingTo._id,
 			function(data) { //onSuccess
 				console.log("Add comment finished: " + data);
-
-				$scope.comments.splice(index+1, 0, data);
-				$scope.hideCommentBox(index);
+				$scope.comments.push(data);
+				$scope.hideCommentBox(1);
 			},
 			function(data) { //onFailure
 				console.log("Add comment failed: " + data);
+			}
+		);
+	};
+
+	$scope.points = function(comment_id, type){
+		Comments.voteComments(comment_id, type, 
+			function(data){ //on success
+				console.log("Vote comment finished: " + data);
+				//reload the comment
+				// Comments.getComments($scope.episode._id,
+				// 	function(data){ //onSuccess
+				// 		// console.log("load successfully");
+				// 		$scope.comments = data;
+				// 	},
+				// 	function(data) { //onFailure
+
+				// 	}
+				// );
+			},
+			function(data){
+				console.log("Vote comment failed: " + data);
 			}
 		);
 	};

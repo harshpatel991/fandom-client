@@ -92,6 +92,21 @@ angular.module('fandomServices', [])
                     onError(data);
                 });
 
+            },
+
+            voteComments: function(comment_id, type, onSuccess, onError){
+                $http({
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    url: apiLocation + '/vote_comments/' + comment_id,
+                    data: $.param({IncOrDec: type})
+                })
+                .success(function(data, status, headers, config) {
+                    onSuccess(data["data"]);
+                })
+                .error(function(data, status, headers, config) {
+                    onError(data);
+                });
             }
         }
     })

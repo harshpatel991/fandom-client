@@ -32,17 +32,19 @@
                 <div>{{parentcomment.post_time}}</div>
             </div>
             <div style="margin-left:50px;" ng-repeat="childcomment in comments" ng-if="childcomment.parent_id == parentcomment._id">
+                <a href="#" ng-click="points(childcomment._id,'increase')">Good</a>{{childcomment.points}}<a href="#" ng-click="points(childcomments._id, 'decrease')">Suck</a>
                 {{childcomment.text}} <br>
                 {{childcomment.post_time}} <br>
             </div>
             <!-- reply button -->
-            <button ng-click="clickReply(1)" class="btn btn-primary btn-sm" ng-show="user">Reply</button>
+            <button ng-click="clickReply($index)" class="btn btn-primary btn-sm" ng-show="user">Reply</button>
             <!-- reply box -->
-            <div ng-show="showChildReplyBox">
-                <textarea ng-model="replyBoxText"></textarea> <br>
+            <div ng-show="showChildReplyBox[$index]">
+                <textarea ng-model="replyBoxText[$index]"></textarea> <br>
                 <button ng-click="submitReplyComment($index)" class="btn btn-primary btn-sm">Submit</button>
-                <button ng-click="hideCommentBox(1)" class="btn btn-danger btn-sm">Cancel</button>
+                <button ng-click="hideCommentBox($index)" class="btn btn-danger btn-sm">Cancel</button>
             </div>
+
         </div>
 
 
