@@ -1,22 +1,47 @@
 <div class="row" >
-    <div class="col-md-3">
+    <div class="col-md-2">
 
-        <h3>Genres</h3>
-        <ul class="list-group">
-            <a ng-click="search.genre = ''">All<br> </a>
-            <a ng-repeat="aGenre in genres" ng-click="search.genres = aGenre">{{aGenre}}<br> </a>
-        </ul>
+        <h3>Search</h3>
+        <input class="form-control" ng-model="query" type="text" placeholder="TV Show Name">
 
-        {{search.genre}}
+        <hr>
+        <div class="visible-md-block visible-lg-block">
+            <h3>Genres</h3>
+            <ul class="list-group">
+                <a ng-click="search.genres = ''" class="list-group-item" ng-class="{active: search.genres==''}">All<br> </a>
+                <a ng-repeat="aGenre in genres" ng-click="search.genres = aGenre" class="list-group-item" ng-class="{active: search.genres==aGenre}">{{aGenre}}<br> </a>
+            </ul>
+        </div>
 
+        <div class="visible-xs-block visible-sm-block">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a href="javascript:;" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                                <span class="glyphicon glyphicon-chevron-right"></span> Genre
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <ul class="list-group" >
+                                <a ng-click="search.genres = ''" onclick="$('#collapseOne').collapse('toggle');" class="list-group-item" ng-class="{active: search.genres==''}">All<br> </a>
+                                <a ng-repeat="aGenre in genres" ng-click="search.genres = aGenre;" onclick="$('#collapseOne').collapse('toggle');" class="list-group-item" ng-class="{active: search.genres==aGenre}">{{aGenre}}<br> </a>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
-    <div class="col-md-8 col-sm-12">
+    <div class="col-lg-10 col-md-10 col-sm-12">
         <div class="row">
-            <label>Search: <input ng-model="query" type="text"></label>
-            <div class="block-grid-xs-2 block-grid-sm-3">
 
+            <div class="block-grid-xs-2 block-grid-sm-3">
                 <div class="block-grid-item" ng-repeat="show in shows | filter:search | filter:{name: query}">
                     <div class="thumbnail">
                         <a href="#/show/{{show._id}}"><img ng-src="./data/images/{{show.img_filename}}"></a>
