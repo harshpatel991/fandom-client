@@ -111,6 +111,24 @@ fandomControllers.controller('homeController', ['$scope', '$http', '$window', 'S
 	$scope.search = new Object(); //the object used by search genre filter
 	$scope.search['genres'] = '';
 
+
+	var headerImages = ['header-community.jpg', 'header-got.jpg', 'header-twd.jpg'];
+	var headerTitles = ['Community', 'Game of Thrones', 'The Walking Dead'];
+	var headerLevel1Texts = ['Cool. <br>Cool, cool, cool.', 'The North<br> remembers.', "This is life <br> now."];
+	var headerImageIndex = Math.floor((Math.random() * headerImages.length)); //choose a random index to start with
+
+	function setHeader() {
+		headerImageIndex = (headerImageIndex + 1) % headerImages.length ;
+		$('#home-header-image').css('background-image', 'url(../data/homeImages/'+headerImages[headerImageIndex]+')');
+		$('#home-header-text-level-1').html(headerLevel1Texts[headerImageIndex]);
+		$('#header-button-text').html('<span class="glyphicon glyphicon-arrow-right"></span> Discuss ' + headerTitles[headerImageIndex] +' now');
+	}
+
+	setInterval(function(){
+		setHeader();
+	},4500);
+	setHeader();
+
 	Shows.getAllShows(
 		function(data){ //onSuccess
 			$scope.shows = data;
