@@ -15,17 +15,17 @@ fandomControllers.controller('profileController', ['$scope', '$http', '$window',
 			function(data) { //onError
 				//TODO: error message
 			}
-	  );
+		);
 	};
 
 	Users.getProfile(
-		function(data) { //onSuccess
+		function (data) { //onSuccess
 			console.log(data);
 
 			$scope.profile = true;
 			$scope.user = data.user;
 		},
-		function() { //onError
+		function () { //onError
 			//TODO: error message
 		}
 	);
@@ -84,13 +84,11 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 			$scope.profile = true;
 			$scope.user = data.user;
 
-			console.log($scope.user.favorites);
 			checkInFavorites();
 
 		},
-		function() {}//onError
+		function() { }//onError
 	);
-
 
 	$scope.allEpisodes = [];
 	$scope.allSeasons = [];
@@ -113,6 +111,12 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 					Episode.getEpisodes(allEpisodeIds,
 						function(data) { //onSuccess
 							$scope.allEpisodes = data;
+
+							setTimeout(function () { //hacky hack...
+								$("[class='rating']").each(function() {$(this).rating();});
+							}, 500);
+
+
 						},
 						function(){} //onError
 					);
@@ -129,8 +133,6 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 	};
 
 	$scope.removeFromFavorites = function() {
-		console.log($scope.user.favorites);
-
 		for (var index = 0; index < $scope.user.favorites.length; index++) { //find the index where this show_id exists and remove it
 			if ($scope.user.favorites[index] == showId) {
 				$scope.user.favorites.splice(index, 1);
@@ -150,7 +152,6 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 			function(data) { //onSuccess
 				$scope.user = data;
 				checkInFavorites(); //update in favorites status
-				console.log($scope.user.favorites);
 			},
 			function() { //onError
 
@@ -172,13 +173,61 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 
 
 //-------------------episodeController---------------------//
-fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$window', 'CommentsService', 'UsersService', 'EpisodeService', function($scope, $routeParams, $window, Comments, Users, Episode) {
+fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$window', 'CommentsService', 'UsersService', 'EpisodeService', 'ShowsService', function($scope, $routeParams, $window, Comments, Users, Episode, Shows) {
 	var epId = $routeParams.ep_id;
+	$("#user-rating").rating(); //initialize user ratings
+
+	$('#user-rating').on('rating.change', function(event, value, caption) { //stars were clicked on
+
+		var oldRatingValue = 0;
+		//find the location of the rating in the users episode_ratings and remove it
+		for(var ratingIndex = 0; ratingIndex < $scope.user.episodes_ratings.length; ratingIndex++) {
+			var key;
+			for (key in $scope.user.episodes_ratings[ratingIndex]) break;
+			if(key === epId) { //remove the object from the array
+				oldRatingValue =  $scope.user.episodes_ratings[ratingIndex][key];
+				$scope.user.episodes_ratings.splice(ratingIndex, 1);
+				break;
+			}
+		}
+
+		var ratingPair = {}; //new item to insert into episodes_ratings
+		ratingPair[epId] = value
+		$scope.user.episodes_ratings.push(ratingPair);
+
+		Users.editUser($scope.user, //Update the user
+			function(){}, //onSuccess, don't need to do anything here,
+			function(){} //onError
+		);
+
+		//Update the episode
+		Episode.editRating($scope.episode._id, (oldRatingValue === 0), value-oldRatingValue, //add difference between rating and increase
+			function(data) { //onSuccess
+				$scope.episode.rating_sum = data.rating_sum;
+				$scope.episode.rating_count = data.rating_count;
+				$("#average-rating").rating('update', $scope.episode.rating_sum/$scope.episode.rating_count);
+			},
+			function() {} //onError
+		);
+	});
+
 
 	Users.getProfile(
 		function(data) { //onSuccess
 			$scope.profile = true;
 			$scope.user = data.user;
+
+			//find the location of the rating in the users episode_ratings
+			for(var ratingIndex = 0; ratingIndex < $scope.user.episodes_ratings.length; ratingIndex++) {
+				var key;
+				for (key in $scope.user.episodes_ratings[ratingIndex]) break;
+				if(key === epId) {
+					var usersRating = $scope.user.episodes_ratings[ratingIndex][key];
+					$("#user-rating").rating('update', usersRating);
+					break;
+				}
+			}
+
 		},
 		function() {}//onError
 	);
@@ -186,13 +235,23 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 	Episode.getEpisode(epId,
 		function(data) { //onSuccess
 			$scope.episode = data;
+			$("#average-rating").val($scope.episode.rating_sum/$scope.episode.rating_count);
+			$("#average-rating").rating();
+
+			if(data.img_url === "") { //if the episode doesn't have an image, load the shows image
+				Shows.getShow($scope.episode.show_id,
+					function(show) { //onSuccess
+						$scope.episode.img_filename = show.img_filename;
+					},
+					function() {} //onError
+				);
+			}
 		},
 		function() {} //onError
 	);
 
 	Comments.getComments(epId,
 		function(data){ //onSuccess
-			console.log("load successfully");
 			$scope.comments = data;
 		},
 		function(data) { //onFailure

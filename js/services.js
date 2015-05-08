@@ -147,6 +147,22 @@ angular.module('fandomServices', [])
                     .error(function(data, status, headers, config) {
                         onError(data);
                     });
+            },
+            editRating: function(episodeId, increaseRating, ratingValueChange, onSuccess, onError) {
+                var ratingCountChange = 0;
+                if(increaseRating) { ratingCountChange = 1; }
+                $http({
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    url: apiLocation + '/episodes/'+episodeId,
+                    data: $.param({_id: episodeId, count_rating: ratingCountChange, star_rating: ratingValueChange})
+                })
+                    .success(function(data, status, headers, config) {
+                        onSuccess(data["data"]);
+                    })
+                    .error(function(data, status, headers, config) {
+                        onError(data);
+                    });
             }
         }
     })

@@ -15,8 +15,8 @@
         <b>Network: </b> <span ng-repeat="network in show.networks">{{network}}</span>
         <hr>
 
-        <div class="btn btn-success" ng-show="!isInFavorites" ng-click="addToFavorites()"><span class="glyphicon glyphicon-plus"></span> Add To Favorites</div>
-        <div class="btn btn-danger" ng-show="isInFavorites" ng-click="removeFromFavorites()"><span class="glyphicon glyphicon-warning-sign"></span> Remove From Favorites</div>
+        <div class="btn btn-success" ng-show="profile && !isInFavorites" ng-click="addToFavorites()"><span class="glyphicon glyphicon-plus"></span> Add To Favorites</div>
+        <div class="btn btn-danger" ng-show="profile && isInFavorites" ng-click="removeFromFavorites()"><span class="glyphicon glyphicon-warning-sign"></span> Remove From Favorites</div>
     </div>
 </div>
 
@@ -27,7 +27,10 @@
         <div ng-repeat="aSeason in allSeasons">
 
         <h2 class="media-heading">{{aSeason.name}}</h2>
-            <a ng-repeat="aShow in allEpisodes" ng-if="aShow.season_number == aSeason.season_number" href="#/episode/{{aShow._id}}"><h4>{{aShow.name}}</h4></a>
+            <a ng-repeat="aShow in allEpisodes" ng-if="aShow.season_number == aSeason.season_number" href="#/episode/{{aShow._id}}">
+                <h4>{{aShow.name}}</h4>
+                <input type="number" class="rating" step="1" size="xs" data-show-caption="false" data-show-clear="false" data-size="xs" data-rtl="false" value="{{aShow.rating_sum/aShow.rating_count}}" readonly="true">
+            </a>
 
 
             <hr>
