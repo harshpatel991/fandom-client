@@ -63,6 +63,17 @@ angular.module('fandomServices', [])
                 });
             },
 
+            getUserProfile: function(userId, onSuccess, onError) {
+                $http.get(apiLocation + '/users/' + userId)
+                    .success(function(data) {
+                        onSuccess(data);
+
+                    })
+                    .error(function(data) {
+                        onError(data);
+                    });
+            },
+
             editUser: function(user, onSuccess, onError) {
                 $http.defaults.withCredentials = true; //required so that http will send the authentication cookies with request
                 console.log(apiLocation + '/users/'+user._id);
@@ -108,6 +119,18 @@ angular.module('fandomServices', [])
                 .error(function(data, status, headers, config) {
                     onError(data);
                 });
+
+            },
+
+            getUserComments: function(userId, onSuccess, onError) {
+
+                $http.get(apiLocation + '/user_comments/'+userId)
+                    .success(function(data, status, headers, config) {
+                        onSuccess(data["data"]);
+                    })
+                    .error(function(data, status, headers, config) {
+                        onError(data);
+                    });
 
             },
 
@@ -178,6 +201,15 @@ angular.module('fandomServices', [])
                 .error(function(data, status, headers, config) {
                     onError(data);
                 });
+            },
+            getFavoriteShows: function(userId, onSuccess, onError){
+                $http.get(apiLocation + '/user_favorites/'+userId)
+                    .success(function(data, status, headers, config){
+                        onSuccess(data["data"]);
+                    })
+                    .error(function(data, status, headers, config) {
+                        onError(data);
+                    });
             },
             getAllShows: function(onSuccess, onError) {
                 $http.get(apiLocation + '/shows/')

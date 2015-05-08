@@ -2,7 +2,7 @@ var fandomControllers = angular.module('fandomControllers', []);
 
 var apiLocation = 'http://localhost:4000/api';
 
-fandomControllers.controller('profileController', ['$scope', '$http', '$window', 'UsersService', function($scope, $http, $window, Users) {
+fandomControllers.controller('profileController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', function($scope, $routeParams, $http, $window, Users) {
 	$scope.profile = false;
 
 	$scope.logout = function () {
@@ -17,19 +17,62 @@ fandomControllers.controller('profileController', ['$scope', '$http', '$window',
 			}
 		);
 	};
+		Users.getProfile(
+			function (data) { //onSuccess
+				console.log(data);
 
-	Users.getProfile(
+				$scope.profile = true;
+				$scope.user = data.user;
+			},
+			function () { //onError
+				//TODO: error message
+			}
+		);
+}]);
+
+fandomControllers.controller('profileUserController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'ShowsService', function($scope, $routeParams, $http, $window, Users, Shows) {
+	var userId = $routeParams.user_id;
+
+	Users.getUserProfile(userId,
 		function (data) { //onSuccess
+			console.log('user profile');
 			console.log(data);
 
-			$scope.profile = true;
-			$scope.user = data.user;
+			$scope.userProfile = data.data;
 		},
 		function () { //onError
 			//TODO: error message
 		}
 	);
+}]);
 
+fandomControllers.controller('profileCommentsController', ['$scope', '$routeParams', '$http', '$window', 'CommentsService', function($scope, $routeParams, $http, $window, Comments) {
+	$scope.selectedUserId = $routeParams.user_id;
+
+	Comments.getUserComments($scope.selectedUserId,
+		function (data) { //onSuccess
+			console.log(data);
+
+			$scope.userComments = data;
+			$scope.userComments.sort(function(a,b){return new Date(b.post_time) - new Date(a.post_time);});
+		},
+		function () { //onError
+			//TODO: error message
+		}
+	);
+}]);
+
+fandomControllers.controller('profileFavoritesController', ['$scope', '$routeParams', '$http', '$window', 'ShowsService', function($scope, $routeParams, $http, $window, Shows) {
+	$scope.selectedUserId = $routeParams.user_id;
+
+	Shows.getFavoriteShows($scope.selectedUserId,
+		function (data) { //onSuccess
+			$scope.userFavorites = data;
+		},
+		function () { //onError
+			//TODO: error message
+		}
+	);
 }]);
 
 fandomControllers.controller('loginController', ['$scope', '$http', '$window', 'UsersService', function($scope, $http, $window, Users) {

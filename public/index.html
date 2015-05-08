@@ -29,7 +29,7 @@
         <div class="row">
             <div ng-controller="profileController" class="col-md-8 col-md-offset-2">
                 <a href="#/index">Fandom</a>
-                {{user.local.email}}
+                <a href="#/profile/{{user._id}}">{{user.local.email}}</a>
                 <a ng-click="logout()" class="button small" ng-show="profile" ng-show="profile">Logout</a>
 
                 <a class="btn btn-primary pull-right" ng-show="!profile" href="#/login">Login</a>

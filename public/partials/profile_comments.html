@@ -1,0 +1,34 @@
+<h1>Comments</h1>
+
+<!-- PROFILE INFORMATION -->
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div role="tabpanel">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation"><a href="#/profile/{{selectedUserId}}" aria-controls="home"
+                                           role="tab" data-toggle="tab">Profile</a></li>
+                <li role="presentation" class="active"><a ng-href="#/profile_comments/{{selectedUserId}}"
+                                                          aria-controls="messages" role="tab"
+                                                          data-toggle="tab">Comments</a>
+                </li>
+                <li role="presentation"><a ng-href="#/profile_favorites/{{selectedUserId}}" aria-controls="settings"
+                                           role="tab" data-toggle="tab">Favorites</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div style="border-bottom: 2px solid #000000" ng-repeat="comment in userComments">
+                    <div>
+                        <div>{{comment.text}}</div>
+                        <div>{{comment.post_time}}</div>
+                        <br>
+
+                        <div><a href="#/episode/{{comment.episode_id}}">View Comment</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

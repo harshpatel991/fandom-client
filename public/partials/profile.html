@@ -1,16 +1,26 @@
-<h1>Profile Page</h1>
+<h1 ng-show="userProfile">Profile</h1>
 <a ng-click="logout()" class="button small" ng-show="profile">Logout</a>
 
 <!-- PROFILE INFORMATION -->
-<div class="well" ng-show="profile">
-    <p>
-        <strong>id</strong>: {{user._id}}<br>
-        <strong>email</strong>: {{user.local.email}}<br>
-        <strong>password</strong>: {{user.local.password}}
-    </p>
-</div>
+<div class="panel panel-default" ng-show="userProfile">
+    <div class="panel-body">
 
-<div class="jumbotron text-center" ng-hide="profile">
-    <a href="#/login" class="button">Login</a>
-    <a href="#/signup" class="button">Signup</a>
+    <div role="tabpanel">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#/profile/{{userProfile._id}}" aria-controls="home" role="tab" data-toggle="tab">Profile</a></li>
+            <li role="presentation"><a href="#/profile_comments/{{userProfile._id}}" aria-controls="messages" role="tab" data-toggle="tab">Comments</a></li>
+            <li role="presentation"><a href="#/profile_favorites/{{userProfile._id}}" aria-controls="settings" role="tab" data-toggle="tab">Favorites</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <p>
+                <strong>id</strong>: {{userProfile._id}}<br>
+                <strong>email</strong>: {{userProfile.local.email}}<br>
+                <strong>password</strong>: {{userProfile.local.password}}
+            </p>
+        </div>
+
+    </div>
 </div>

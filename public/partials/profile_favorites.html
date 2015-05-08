@@ -1,0 +1,36 @@
+<h1>Favorites</h1>
+
+<!-- PROFILE INFORMATION -->
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div role="tabpanel">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation"><a href="#/profile/{{selectedUserId}}" aria-controls="home"
+                                           role="tab" data-toggle="tab">Profile</a></li>
+                <li role="presentation"><a ng-href="#/profile_comments/{{selectedUserId}}"
+                                                          aria-controls="messages" role="tab"
+                                                          data-toggle="tab">Comments</a>
+                </li>
+                <li role="presentation" class="active"><a ng-href="#/profile_favorites/{{selectedUserId}}" aria-controls="settings"
+                                           role="tab" data-toggle="tab">Favorites</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="block-grid-xs-2 block-grid-sm-3 block-grid-lg-4">
+                    <div class="block-grid-item" ng-repeat="show in userFavorites">
+                        <div class="thumbnail">
+                            <a href="#/show/{{show._id}}"><img ng-src="./data/images/{{show.img_filename}}"></a>
+                            <div class="caption">
+                                <a href="#/show/{{show._id}}"><h3>{{show.name}}</h3></a>
+                                <button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
