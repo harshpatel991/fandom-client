@@ -114,6 +114,7 @@ fandomControllers.controller('homeController', ['$scope', '$http', '$window', 'S
 
 	var headerImages = ['header-community.jpg', 'header-got.jpg', 'header-twd.jpg'];
 	var headerTitles = ['Community', 'Game of Thrones', 'The Walking Dead'];
+	var headerLinks = ['18347', '1399', '1402'];
 	var headerLevel1Texts = ['Cool. <br>Cool, cool, cool.', 'The North<br> remembers.', "This is life <br> now."];
 	var headerImageIndex = Math.floor((Math.random() * headerImages.length)); //choose a random index to start with
 
@@ -122,6 +123,7 @@ fandomControllers.controller('homeController', ['$scope', '$http', '$window', 'S
 		$('#home-header-image').css('background-image', 'url(../data/homeImages/'+headerImages[headerImageIndex]+')');
 		$('#home-header-text-level-1').html(headerLevel1Texts[headerImageIndex]);
 		$('#header-button-text').html('<span class="glyphicon glyphicon-arrow-right"></span> Discuss ' + headerTitles[headerImageIndex] +' now');
+		$("#header-button-text").attr("href", "#/show/"+headerLinks[headerImageIndex]);
 	}
 
 	setInterval(function(){
