@@ -74,3 +74,7 @@ h1 {
 /* line 20, ../../sass/_base.scss */
 .childComment {
   padding-left: 40px; }
+
+/* line 24, ../../sass/_base.scss */
+.episode-list-item {
+  display: inline-block; }
