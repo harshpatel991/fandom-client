@@ -14,8 +14,8 @@
         <b>Air Date: </b> {{episode.air_date}}
         <br>
 
-        <div ng-show="profile">Your Rating: <input id="user-rating" type="number" class="rating" step="1" size="xs" data-show-caption="false" data-show-clear="false" data-size="xs" data-rtl="false"></div>
-        Average Rating: <input id="average-rating" type="number" class="rating" step="1" size="xs" data-show-caption="false" data-show-clear="false" data-size="xs" data-rtl="false" readonly="true">by ({{episode.rating_count}}) Users
+        <div ng-show="profile"><b>Your Rating: </b><input id="user-rating" type="number" class="rating" step="1" size="xs" data-show-caption="false" data-show-clear="false" data-size="xs" data-rtl="false"></div>
+        <b>Average Rating: </b><input id="average-rating" type="number" class="rating" step="1" size="xs" data-show-caption="false" data-show-clear="false" data-size="xs" data-rtl="false" readonly="true">by ({{episode.rating_count}}) Users
     </div>
 </div>
 
@@ -24,11 +24,17 @@
         <h2>Comments</h2>
         <!-- Add parent Comment -->
         <button class="btn btn-default pull-right" ng-click="clickReply(-1)" ng-show="profile">Reply</button>
+        <a class="btn btn-default pull-right" ng-show="!profile" href="#/login">Login To Comment</a> <br>
 
         <div ng-show="showParentReplyBox">
             <textarea ng-model="parentReplyBoxText"></textarea>
             <button ng-click="submitParentComment(-1)" class="btn btn-primary">Submit</button>
             <button ng-click="hideCommentBox(-1)" class="btn btn-primary">Cancel</button>
+        </div>
+
+        <div ng-show="comments.length == 0">
+            <h2 class="text-center">No comments here :( <br>
+            Post a comment to start a conversation. </h2>
         </div>
 
         <!-- All the comment -->
