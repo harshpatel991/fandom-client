@@ -22,7 +22,7 @@
 
                 <div class="block-grid-item" ng-repeat="show in shows">
                     <div class="thumbnail">
-                        <img ng-src="./data/images/{{show.img_filename}}">
+                        <a href="#/show/{{show._id}}"><img ng-src="./data/images/{{show.img_filename}}"></a>
                         <div class="caption">
                             <a href="#/show/{{show._id}}"><h3>{{show.name}}</h3></a>
                         </div>
