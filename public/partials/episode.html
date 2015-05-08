@@ -1,6 +1,7 @@
 <div class="row">
     <div class="col-sm-4">
-        <img class="show-image" ng-src="{{episode.img_url}}">
+        <img class="show-image" ng-show="!episode.img_filename" ng-src="{{episode.img_url}}"> <!-- Show the show image only if it has been loaded, otherwise display the episode image -->
+        <img class="show-image" ng-show="episode.img_filename" src="./data/images/{{episode.img_filename}}">
     </div>
 
     <div class="col-sm-8">
@@ -8,8 +9,10 @@
         {{episode.summary}}
         <hr>
         <b>Air Date: </b> {{episode.air_date}}
+        <br>
 
-        <input id="input-id" type="number" class="rating" step="1" size="xs" data-show-caption="false" data-show-clear="false" data-size="xs" data-rtl="false">
+        <div ng-show="profile">Your Rating: <input id="user-rating" type="number" class="rating" step="1" size="xs" data-show-caption="false" data-show-clear="false" data-size="xs" data-rtl="false"></div>
+        Average Rating: <input id="average-rating" type="number" class="rating" step="1" size="xs" data-show-caption="false" data-show-clear="false" data-size="xs" data-rtl="false" readonly="true">by ({{episode.rating_count}}) Users
     </div>
 </div>
 
@@ -17,7 +20,7 @@
     <div class="col-sm-12">
         <h2>Comments</h2>
         <!-- Add parent Comment -->
-        <button class="btn btn-default pull-right" ng-click="clickReply(-1)" ng-show="user">Reply</button>
+        <button class="btn btn-default pull-right" ng-click="clickReply(-1)" ng-show="profile">Reply</button>
 
         <div ng-show="showParentReplyBox">
             <textarea ng-model="parentReplyBoxText"></textarea>
@@ -37,7 +40,7 @@
                 {{childcomment.post_time}} <br>
             </div>
             <!-- reply button -->
-            <button ng-click="clickReply($index)" class="btn btn-primary btn-sm" ng-show="user">Reply</button>
+            <button ng-click="clickReply($index)" class="btn btn-primary btn-sm" ng-show="profile">Reply</button>
             <!-- reply box -->
             <div ng-show="showChildReplyBox[$index]">
                 <textarea ng-model="replyBoxText[$index]"></textarea> <br>
