@@ -65,13 +65,31 @@ fandomControllers.controller('signupController', ['$scope', '$http', '$window', 
 ]);
 
 fandomControllers.controller('homeController', ['$scope', '$http', '$window', 'ShowsService', function($scope, $http, $window, Shows) {
+	$scope.search = new Object(); //the object used by search genre filter
+	$scope.search['genres'] = '';
 
 	Shows.getAllShows(
 		function(data){ //onSuccess
 			$scope.shows = data;
+
+			//go through all the shows put the genres in
+			var genres = new Object();
+			for (var movieIndex = 0; movieIndex < $scope.shows.length; movieIndex++) {
+				for(var genreIndex = 0; genreIndex < $scope.shows[movieIndex]['genres'].length; genreIndex++) {
+					var genre = $scope.shows[movieIndex]['genres'][genreIndex];
+					genres[genre] = genre; //add to array
+				}
+			}
+
+			$scope.genres = genres;
+
+
+
 		},
 		function(){} //onError
 	);
+
+
 
 }]);
 

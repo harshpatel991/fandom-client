@@ -1,26 +1,23 @@
 <div class="row" >
     <div class="col-md-3">
 
+        <h3>Genres</h3>
         <ul class="list-group">
-            <li class="list-group-item text-center"><b>Categories</b></li>
-            <li class="list-group-item">Action</li>
-            <li class="list-group-item">Adventure</li>
-            <li class="list-group-item">Chick Flick</li>
-            <li class="list-group-item">Drama</li>
-            <li class="list-group-item">Musical</li>
-            <li class="list-group-item">Mystery</li>
-            <li class="list-group-item">Thriller</li>
-            <li class="list-group-item">...</li>
+            <a ng-click="search.genre = ''">All<br> </a>
+            <a ng-repeat="aGenre in genres" ng-click="search.genres = aGenre">{{aGenre}}<br> </a>
         </ul>
+
+        {{search.genre}}
 
 
     </div>
 
     <div class="col-md-8 col-sm-12">
         <div class="row">
+            <label>Search: <input ng-model="query" type="text"></label>
             <div class="block-grid-xs-2 block-grid-sm-3">
 
-                <div class="block-grid-item" ng-repeat="show in shows">
+                <div class="block-grid-item" ng-repeat="show in shows | filter:search | filter:{name: query}">
                     <div class="thumbnail">
                         <a href="#/show/{{show._id}}"><img ng-src="./data/images/{{show.img_filename}}"></a>
                         <div class="caption">
