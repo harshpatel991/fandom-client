@@ -117,3 +117,22 @@ h1 {
   /* line 63, ../../sass/_base.scss */
   .show-header hr {
     border-color: #DBDBDB; }
+
+/* line 68, ../../sass/_base.scss */
+.episode-textarea {
+  margin-top: 10px;
+  margin-bottom: 5px; }
+
+/* line 73, ../../sass/_base.scss */
+.comment-parent {
+  background-color: rgba(232, 232, 232, 0.3);
+  padding: 10px 10px;
+  margin-top: 15px; }
+
+/* line 79, ../../sass/_base.scss */
+.comment-child {
+  margin-top: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
+  padding: 10px 10px;
+  background-color: rgba(200, 200, 200, 0.3); }

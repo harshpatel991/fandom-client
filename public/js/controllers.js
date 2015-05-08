@@ -391,7 +391,7 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 			function(data) { //onSuccess
 				console.log("Add comment finished: " + data);
 				$scope.comments.push(data);
-				$scope.hideCommentBox(1);
+				$scope.hideCommentBox(id);
 			},
 			function(data) { //onFailure
 				console.log("Add comment failed: " + data);

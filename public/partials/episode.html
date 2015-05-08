@@ -27,9 +27,9 @@
         <a class="btn btn-default pull-right" ng-show="!profile" href="#/login">Login To Comment</a> <br>
 
         <div ng-show="showParentReplyBox">
-            <textarea ng-model="parentReplyBoxText"></textarea>
-            <button ng-click="submitParentComment(-1)" class="btn btn-primary">Submit</button>
-            <button ng-click="hideCommentBox(-1)" class="btn btn-primary">Cancel</button>
+            <textarea ng-model="parentReplyBoxText" rows="8" class="form-control episode-textarea" placeholder="Your reply..."></textarea>
+            <button ng-click="submitParentComment(-1)" class="btn btn-primary btn-sm">Submit</button>
+            <button ng-click="hideCommentBox(-1)" class="btn btn-danger btn-sm">Cancel</button>
         </div>
 
         <div ng-show="comments.length == 0">
@@ -38,24 +38,28 @@
         </div>
 
         <!-- All the comment -->
-        <div style="border-bottom: 2px solid #000000" ng-repeat="parentcomment in comments" ng-if="parentcomment.parent_id == -1">
+        <div ng-repeat="parentcomment in comments" class="comment-parent" ng-if="parentcomment.parent_id == -1">
             <div>
                 <div>{{parentcomment.text}}</div>
                 <div>{{parentcomment.post_time}}</div>
             </div>
-            <div style="margin-left:50px;" ng-repeat="childcomment in comments" ng-if="childcomment.parent_id == parentcomment._id">
-                <button ng-click="points(childcomment._id,'increase')">Good</button>{{childcomment.points}}<button ng-click="points(childcomments._id, 'decrease')">Suck</button>
-                {{childcomment.text}} <br>
-                {{childcomment.post_time}} <br>
-            </div>
+
             <!-- reply button -->
             <button ng-click="clickReply($index)" class="btn btn-primary btn-sm" ng-show="profile">Reply</button>
             <!-- reply box -->
             <div ng-show="showChildReplyBox[$index]">
-                <textarea ng-model="replyBoxText[$index]"></textarea> <br>
+                <textarea ng-model="replyBoxText[$index]" rows="8" class="form-control episode-textarea" placeholder="Your reply..."></textarea>
                 <button ng-click="submitReplyComment($index)" class="btn btn-primary btn-sm">Submit</button>
                 <button ng-click="hideCommentBox($index)" class="btn btn-danger btn-sm">Cancel</button>
             </div>
+
+            <div ng-repeat="childcomment in comments" class="comment-child" ng-if="childcomment.parent_id == parentcomment._id">
+                <button ng-click="points(childcomment._id,'increase')">Good</button>{{childcomment.points}}<button ng-click="points(childcomments._id, 'decrease')">Suck</button>
+                {{childcomment.text}} <br>
+                <h6>{{childcomment.post_time}}</h6>
+
+            </div>
+
 
         </div>
 
