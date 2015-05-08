@@ -1,19 +1,25 @@
 <div class="row">
-    <div class="col-sm-4">
-        <a href="#">
-            <img class="show-image" src="./data/images/{{show.img_filename}}">
-        </a>
+    <div class="col-sm-3">
+        <img class="show-image" src="./data/images/{{show.img_filename}}">
     </div>
-    <div class="col-sm-8">
+    <div class="col-sm-9">
 
         <h1>{{show.name}}</h1>
         {{show.summary}}
 
+        <div ng-show="show.cast.length != 0">
+            <hr>
+            <b>Cast: </b> <span ng-repeat="castMember in show.cast">{{castMember}} </span>
+        </div>
+
+        <div ng-show="show.networks.length != 0">
+            <hr>
+            <b>Network: </b> <span ng-repeat="network in show.networks">{{network}}</span>
+        </div>
+
         <hr>
-        <b>Cast: </b> <span ng-repeat="castMember in show.cast">{{castMember}} </span>
-        <hr>
-        <b>Network: </b> <span ng-repeat="network in show.networks">{{network}}</span>
-        <hr>
+        <b>IMDB Rating: </b> <span>{{show.imdb_rating}}</span>
+
 
         <div class="btn btn-success" ng-show="profile && !isInFavorites" ng-click="addToFavorites()"><span class="glyphicon glyphicon-plus"></span> Add To Favorites</div>
         <div class="btn btn-danger" ng-show="profile && isInFavorites" ng-click="removeFromFavorites()"><span class="glyphicon glyphicon-warning-sign"></span> Remove From Favorites</div>
@@ -26,19 +32,15 @@
 
         <div ng-repeat="aSeason in allSeasons">
 
-        <h2 class="media-heading">{{aSeason.name}}</h2>
+            <h2 class="media-heading">{{aSeason.name}}</h2>
             <a ng-repeat="aShow in allEpisodes" ng-if="aShow.season_number == aSeason.season_number" href="#/episode/{{aShow._id}}">
                 <h4 class="episode-list-item">{{aShow.name}}</h4>
                 <input style="display:block;" type="number" class="rating" step="1" size="xs" data-show-caption="false" data-show-clear="false" data-size="xs" data-rtl="false" value="{{aShow.rating_sum/aShow.rating_count}}" readonly="true">
                 <br>
             </a>
-
-
             <hr>
 
         </div>
-
-
 
     </div>
 </div>
