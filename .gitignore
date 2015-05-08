@@ -54,5 +54,5 @@ crashlytics-build.properties
 node_modules/
 npm-debug.log
 
-public/js/
+#public/js/
 public/lib/
