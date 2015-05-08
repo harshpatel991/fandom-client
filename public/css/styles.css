@@ -78,3 +78,26 @@ h1 {
 /* line 24, ../../sass/_base.scss */
 .episode-list-item {
   display: inline-block; }
+
+/* line 28, ../../sass/_base.scss */
+.home-header-image {
+  background-image: url("../data/homeImages/Community-2014-TV-Series-Poster-Wallpaper.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  padding: 25px;
+  color: #ffffff;
+  background-position: center; }
+
+/* line 41, ../../sass/_base.scss */
+.home-header-image h1 {
+  font-size: 8vmax;
+  color: #ffffff;
+  font-weight: 700; }
+
+/* line 48, ../../sass/_base.scss */
+.classroom-explanation {
+  padding: 20px;
+  font-size: 1.5em;
+  text-align: center;
+  font-weight: 700; }

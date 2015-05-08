@@ -24,3 +24,30 @@ h1 {
 .episode-list-item {
   display: inline-block;
 }
+
+.home-header-image {
+    background-image: url("../data/homeImages/Community-2014-TV-Series-Poster-Wallpaper.jpg");
+
+    background-size: cover;
+    background-repeat: no-repeat;
+//    background-position: left top;
+    background-attachment: fixed;
+    padding: 25px;
+    color: #ffffff;
+  background-position: center;
+
+}
+
+.home-header-image h1 {
+  font-size: 8vmax;
+  color: #ffffff;
+  font-weight: 700;
+
+}
+
+.classroom-explanation {
+  padding: 20px;
+  font-size: 1.5em;
+  text-align: center;
+  font-weight: 700;
+}
