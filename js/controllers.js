@@ -7,18 +7,17 @@ fandomControllers.controller('profileController', ['$scope', '$http', '$window',
 }]);
 
 fandomControllers.controller('profileUserController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'CommentsService', 'ShowsService', function($scope, $routeParams, $http, $window, Users, Comments, Shows) {
-	$scope.isMyProfile = false;
-	addUserToScope($scope, Users, $window, Shows,  //this will set $scope.user
-		function(data){ //callback once User.getUser has been called
-			$scope.isMyProfile = data.user._id == $scope.selectedUserId;
-		}
-	);
-
 	$scope.mismatchError = true;
 	$scope.passwordChangeSuccess = true;
 	$scope.selectedUserId = $routeParams.user_id;
 	$scope.numberUpvotes = 0;
 	$scope.isMyProfile = false;
+
+	addUserToScope($scope, Users, $window, Shows,  //this will set $scope.user
+		function(data){ //callback once User.getUser has been called
+			$scope.isMyProfile = data.user._id == $scope.selectedUserId;
+		}
+	);
 
 	Users.getUserProfile($scope.selectedUserId,
 		function (data) { //onSuccess
@@ -70,19 +69,28 @@ fandomControllers.controller('profileUserController', ['$scope', '$routeParams',
 }]);
 
 fandomControllers.controller('profileCommentsController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'CommentsService', 'ShowsService', function($scope, $routeParams, $http, $window, Users, Comments, Shows) {
-	addUserToScope($scope, Users, $window, Shows, function(){});
-
 	$scope.selectedUserId = $routeParams.user_id;
 	$scope.commentsEmpty = false;
 	$scope.loading = true;
+	$scope.numberUpvotes = 0;
+
+	addUserToScope($scope, Users, $window, Shows, function(data){
+		$scope.isMyProfile = data.user._id == $scope.selectedUserId;
+	});
 
 	Comments.getUserComments($scope.selectedUserId,
 		function (data) { //onSuccess
 			$scope.loading = false;
 			$scope.userComments = data;
 			$scope.userComments.sort(function(a,b){return new Date(b.post_time) - new Date(a.post_time);});
+
 			if ($scope.userComments === undefined || $scope.userComments.length === 0){
 				$scope.commentsEmpty = true;
+			}
+			else{
+				for (var i = 0; i < $scope.userComments.length; i++){
+					$scope.numberUpvotes += parseInt($scope.userComments[i].points);
+				}
 			}
 		},
 		function () { //onError
@@ -93,11 +101,12 @@ fandomControllers.controller('profileCommentsController', ['$scope', '$routePara
 	);
 }]);
 
-fandomControllers.controller('profileFavoritesController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'ShowsService', function($scope, $routeParams, $http, $window, Users, Shows) {
+fandomControllers.controller('profileFavoritesController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'ShowsService', 'CommentsService', function($scope, $routeParams, $http, $window, Users, Shows, Comments) {
 	$scope.selectedUserId = $routeParams.user_id;
 	$scope.isMyProfile = false;
 	$scope.favoritesEmpty = false;
 	$scope.loading = true;
+	$scope.numberUpvotes = 0;
 
 	addUserToScope($scope, Users, $window, Shows, //this will set $scope.user
 		function(data){//callback once User.getUser has been called
@@ -117,6 +126,18 @@ fandomControllers.controller('profileFavoritesController', ['$scope', '$routePar
 			//TODO: error message
 			$scope.loading = false;
 			$scope.favoritesEmpty = true;
+		}
+	);
+
+	Comments.getUserComments($scope.selectedUserId,
+		function (data) { //onSuccess
+			var userComments = data;
+			for (var i = 0; i < userComments.length; i++){
+				$scope.numberUpvotes += parseInt(userComments[i].points);
+			}
+		},
+		function () { //onError
+			//TODO: error message
 		}
 	);
 
@@ -565,9 +586,11 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 	};
 
 	$scope.points = function(comment_id, valueChange){
-		if($scope.profile === false) //not logged in
+
+		if($scope.profile === false) { //not logged in
 			alert("Please login to vote on comments.");
 			return;
+		}
 
 		//check if this user has already upvoted/downvoted, remove if so
 		var commentUpvotedIndex = $scope.user.comments_upvoted.indexOf(comment_id);

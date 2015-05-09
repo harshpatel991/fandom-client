@@ -8,8 +8,8 @@ fandomApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'partials/login.html',
             controller: 'loginController'
         }).
-        when('/profile/:user_id', {
-            templateUrl: 'partials/profile.html',
+        when('/profile_settings/:user_id', {
+            templateUrl: 'partials/profile_settings.html',
             controller: 'profileUserController'
         }).
         when('/profile_comments/:user_id', {

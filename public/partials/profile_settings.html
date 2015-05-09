@@ -27,7 +27,7 @@
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a ng-show="profile" href="#/profile/{{user._id}}"><span class="glyphicon glyphicon-user"></span> {{user.local.email}}</a></li>
+                        <li><a ng-show="profile" href="#/profile_comments/{{user._id}}"><span class="glyphicon glyphicon-user"></span> {{user.local.email}}</a></li>
 
                         <li><a ng-click="logout()" href="javascript:;" ng-show="profile"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 
@@ -46,7 +46,8 @@
 <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
-    <h1 ng-show="userProfile">Profile</h1>
+    <h2 class="display-inline-block">{{user.local.email}}</h2>
+    <h4 class="display-inline-block">({{numberUpvotes}})</h4>
 
     <!-- PROFILE INFORMATION -->
     <div class="panel panel-default" ng-show="userProfile">
@@ -55,17 +56,13 @@
         <div role="tabpanel">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#/profile/{{selectedUserId}}">Profile</a></li>
                 <li role="presentation"><a href="#/profile_comments/{{selectedUserId}}">Comments</a></li>
                 <li role="presentation"><a href="#/profile_favorites/{{selectedUserId}}">Favorites</a></li>
+                <li ng-show="isMyProfile" role="presentation" class="active"><a href="#/profile_settings/{{selectedUserId}}">Settings</a></li>
             </ul>
 
             <!-- Tab panes -->
             <div class="tab-content">
-                <h3>{{userProfile.local.email}}</h3>
-                <p>
-                    <strong>Pops</strong>: {{numberUpvotes}}<br>
-                </p>
 
                 <button ng-if="isMyProfile" class="btn btn-default" type="button" data-toggle="collapse" data-target="#changePassword" aria-expanded="false" aria-controls="changePassword">
                     Change Password
