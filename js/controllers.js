@@ -346,6 +346,8 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 //-------------------episodeController---------------------//
 fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$window', 'CommentsService', 'UsersService', 'EpisodeService', 'ShowsService', function($scope, $routeParams, $window, Comments, Users, Episode, Shows) {
 	$scope.profile = false;
+	$scope.sorting = 'points';
+
 	var epId = $routeParams.ep_id;
 	$("#user-rating").rating(); //initialize user ratings
 
