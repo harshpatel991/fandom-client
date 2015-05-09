@@ -73,14 +73,22 @@ fandomControllers.controller('profileCommentsController', ['$scope', '$routePara
 	addUserToScope($scope, Users, $window, Shows, function(){});
 
 	$scope.selectedUserId = $routeParams.user_id;
+	$scope.commentsEmpty = false;
+	$scope.loading = true;
 
 	Comments.getUserComments($scope.selectedUserId,
 		function (data) { //onSuccess
+			$scope.loading = false;
 			$scope.userComments = data;
 			$scope.userComments.sort(function(a,b){return new Date(b.post_time) - new Date(a.post_time);});
+			if ($scope.userComments === undefined || $scope.userComments.length === 0){
+				$scope.commentsEmpty = true;
+			}
 		},
 		function () { //onError
 			//TODO: error message
+			$scope.loading = false;
+			$scope.commentsEmpty = true;
 		}
 	);
 }]);
@@ -88,6 +96,8 @@ fandomControllers.controller('profileCommentsController', ['$scope', '$routePara
 fandomControllers.controller('profileFavoritesController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'ShowsService', function($scope, $routeParams, $http, $window, Users, Shows) {
 	$scope.selectedUserId = $routeParams.user_id;
 	$scope.isMyProfile = false;
+	$scope.favoritesEmpty = false;
+	$scope.loading = true;
 
 	addUserToScope($scope, Users, $window, Shows, //this will set $scope.user
 		function(data){//callback once User.getUser has been called
@@ -97,10 +107,16 @@ fandomControllers.controller('profileFavoritesController', ['$scope', '$routePar
 
 	Shows.getFavoriteShows($scope.selectedUserId,
 		function (data) { //onSuccess
+			$scope.loading = false;
 			$scope.userFavorites = data;
+			if ($scope.userFavorites === undefined || $scope.userFavorites.length === 0){
+				$scope.favoritesEmpty = true;
+			}
 		},
 		function () { //onError
 			//TODO: error message
+			$scope.loading = false;
+			$scope.favoritesEmpty = true;
 		}
 	);
 
@@ -125,6 +141,10 @@ fandomControllers.controller('profileFavoritesController', ['$scope', '$routePar
 
 		if($scope.user.favorites.length === 0) {
 			$scope.user.favorites = [""];
+		}
+
+		if ($scope.userFavorites === undefined || $scope.userFavorites.length === 0){
+			$scope.favoritesEmpty = true;
 		}
 
 		saveUser();

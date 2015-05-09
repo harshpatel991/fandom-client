@@ -62,6 +62,8 @@
 
                     <!-- Tab panes -->
                     <div class="tab-content">
+                        <h6 ng-show="loading" style="margin-left: 15px;">Loading...</h6>
+                        <h3 ng-show="commentsEmpty" style="margin-left: 15px;">No Comments</h3>
                         <div ng-repeat="comment in userComments" class="comment-user">
                             <div class="media">
                                 <div class="media-left media-middle">
