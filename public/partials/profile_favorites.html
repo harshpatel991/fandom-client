@@ -66,7 +66,7 @@
                             <a href="#/show/{{show._id}}"><img ng-src="./data/images/{{show.img_filename}}"></a>
                             <div class="caption">
                                 <a class="episode-list-item" href="#/show/{{show._id}}"><h3>{{show.name}}</h3></a>
-                                <button ng-if="isMyProfile" ng-click="removeFromFavorites(show._id)" class="episode-list-item pull-right btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button>
+                                <button ng-if="isMyProfile" ng-click="removeFromFavorites(show._id)" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span> Remove</button>
                             </div>
                         </div>
                     </div>
