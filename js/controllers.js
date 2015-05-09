@@ -1,38 +1,19 @@
+// Email validation regex taken from http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
 var fandomControllers = angular.module('fandomControllers', []);
-
 var apiLocation = 'http://localhost:4000/api';
 
-fandomControllers.controller('profileController', ['$scope', '$http', '$window', 'UsersService', function($scope, $http, $window, Users) {
-	$scope.profile = false;
+fandomControllers.controller('profileController', ['$scope', '$http', '$window', 'UsersService', 'ShowsService', function($scope, $http, $window, Users, Shows) {
+	addUserToScope($scope, Users, $window, Shows, function(){});
+}]);
 
-	$scope.logout = function () {
-		Users.logout(
-			function(data) { //onSuccess
-				if(!data.error) {
-					$window.location = '#/login'; //redirect
-				}
-			},
-			function(data) { //onError
-				//TODO: error message
-			}
-		);
-	};
-
-	Users.getProfile(
-		function (data) { //onSuccess
-			console.log(data);
-
-			$scope.profile = true;
-			$scope.user = data.user;
-		},
-		function () { //onError
-			//TODO: error message
+fandomControllers.controller('profileUserController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'CommentsService', 'ShowsService', function($scope, $routeParams, $http, $window, Users, Comments, Shows) {
+	$scope.isMyProfile = false;
+	addUserToScope($scope, Users, $window, Shows,  //this will set $scope.user
+		function(data){ //callback once User.getUser has been called
+			$scope.isMyProfile = data.user._id == $scope.selectedUserId;
 		}
 	);
 
-}]);
-
-fandomControllers.controller('profileUserController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'CommentsService', function($scope, $routeParams, $http, $window, Users, Comments) {
 	$scope.selectedUserId = $routeParams.user_id;
 	$scope.numberUpvotes = 0;
 	$scope.isMyProfile = false;
@@ -52,17 +33,6 @@ fandomControllers.controller('profileUserController', ['$scope', '$routeParams',
 			for (var i = 0; i < userComments.length; i++){
 				$scope.numberUpvotes += parseInt(userComments[i].points);
 			}
-		},
-		function () { //onError
-			//TODO: error message
-		}
-	);
-
-	$scope.profile = false;
-
-	Users.getProfile(
-		function (data) { //onSuccess
-			$scope.isMyProfile = data.user._id == $scope.selectedUserId;
 		},
 		function () { //onError
 			//TODO: error message
@@ -90,7 +60,9 @@ fandomControllers.controller('profileUserController', ['$scope', '$routeParams',
 	}
 }]);
 
-fandomControllers.controller('profileCommentsController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'CommentsService', function($scope, $routeParams, $http, $window, Users, Comments) {
+fandomControllers.controller('profileCommentsController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'CommentsService', 'ShowsService', function($scope, $routeParams, $http, $window, Users, Comments, Shows) {
+	addUserToScope($scope, Users, $window, Shows, function(){});
+
 	$scope.selectedUserId = $routeParams.user_id;
 
 	Comments.getUserComments($scope.selectedUserId,
@@ -109,20 +81,15 @@ fandomControllers.controller('profileFavoritesController', ['$scope', '$routePar
 	$scope.selectedUserId = $routeParams.user_id;
 	$scope.isMyProfile = false;
 
-	Shows.getFavoriteShows($scope.selectedUserId,
-		function (data) { //onSuccess
-			$scope.userFavorites = data;
-		},
-		function () { //onError
-			//TODO: error message
+	addUserToScope($scope, Users, $window, Shows, //this will set $scope.user
+		function(data){//callback once User.getUser has been called
+			$scope.isMyProfile = data.user._id == $scope.selectedUserId;
 		}
 	);
 
-	Users.getProfile(
+	Shows.getFavoriteShows($scope.selectedUserId,
 		function (data) { //onSuccess
-			$scope.profile = true;
-			$scope.isMyProfile = data.user._id == $scope.selectedUserId;
-			$scope.user = data.user;
+			$scope.userFavorites = data;
 		},
 		function () { //onError
 			//TODO: error message
@@ -159,6 +126,14 @@ fandomControllers.controller('profileFavoritesController', ['$scope', '$routePar
 		Users.editUser($scope.user,
 			function(data) { //onSuccess
 				$scope.user = data;
+
+				Shows.getFavoriteShows($scope.user._id, //update our list of favorites
+					function (favorites) { //onSuccess
+						$scope.favoritesList = favorites;
+					},
+					function () {} //onError
+				);
+
 			},
 			function() { //onError
 			}
@@ -167,38 +142,58 @@ fandomControllers.controller('profileFavoritesController', ['$scope', '$routePar
 }]);
 
 fandomControllers.controller('loginController', ['$scope', '$http', '$window', 'UsersService', function($scope, $http, $window, Users) {
+	$scope.messageError = '';
+	$scope.message = '';
 
 	$scope.login = function() {
+		$scope.message = 'Loading...';
 		Users.login($scope.email, $scope.password,
 			function (data) { //onSuccess
 				console.log("POST to Login returned good: " + data + "status: " + status);
 				$window.location = '#/profile';
+				$scope.message = '';
 			},
 			function (data) { //onFailure
-				console.log("POST to Login returned bad: " + data + "status: " + status);
+				$scope.messageError = 'Error! Please verify your email and password.';
+				$scope.message = '';
 			}
 		);
 	}
 }]);
 
 fandomControllers.controller('signupController', ['$scope', '$http', '$window', 'UsersService', function($scope, $http, $window, Users) {
+	$scope.messageError = '';
+	$scope.message = '';
+
+	var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 
 	$http.defaults.withCredentials = true; //required so that http will send the authentication cookies with request
-	$scope.signup = function() {
-		Users.signup($scope.email, $scope.password,
-			function(data) {
-				console.log("POST to signup was good: " + data + "status: " + status);
-				$window.location = '#/profile'; //redirect
-			},
-			function(data) {
-				console.log("POST to signup was bad: " + data + "status: " + status);
-			}
-		);
+	$scope.signup = function () {
+		$scope.message = 'Loading...';
+		if ($scope.email != undefined && $scope.password != undefined && re.test($scope.email) && $scope.password.length > 3) {
+			Users.signup($scope.email, $scope.password,
+				function (data) {
+					$scope.messageError = '';
+					$scope.message = '';
+					$window.location = '#/profile'; //redirect
+				},
+				function (data) {
+					$scope.messageError = 'Email taken';
+					$scope.message = '';
+				}
+			);
+		}
+		else {
+			$scope.messageError = 'Emails must be valid, passwords must be greater than 3 characters';
+			$scope.message = '';
+		}
 	}
 }
 ]);
 
-fandomControllers.controller('homeController', ['$scope', '$http', '$window', 'ShowsService', function($scope, $http, $window, Shows) {
+fandomControllers.controller('homeController', ['$scope', '$http', '$window', 'ShowsService', 'UsersService', 'ShowsService', function($scope, $http, $window, Shows, Users, Shows) {
+	addUserToScope($scope, Users, $window, Shows, function(){});
+
 	$scope.search = new Object(); //the object used by search genre filter
 	$scope.search['genres'] = '';
 
@@ -234,16 +229,10 @@ fandomControllers.controller('homeController', ['$scope', '$http', '$window', 'S
 					genres[genre] = genre; //add to array
 				}
 			}
-
 			$scope.genres = genres;
-
-
-
 		},
 		function(){} //onError
 	);
-
-
 
 }]);
 
@@ -251,15 +240,10 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 	var showId = $routeParams.show_id;
 	$scope.isInFavorites = false;
 
-	Users.getProfile(
-		function(data) { //onSuccess
-			$scope.profile = true;
-			$scope.user = data.user;
-
+	addUserToScope($scope, Users, $window, Shows,
+		function(){
 			checkInFavorites();
-
-		},
-		function() { }//onError
+		}
 	);
 
 	$scope.allEpisodes = [];
@@ -301,6 +285,7 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 
 	$scope.addToFavorites = function() {
 		$scope.user.favorites.push(showId);
+
 		saveUser();
 	};
 
@@ -324,6 +309,14 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 			function(data) { //onSuccess
 				$scope.user = data;
 				checkInFavorites(); //update in favorites status
+
+				Shows.getFavoriteShows($scope.user._id, //update our list of favorites for the nav bar
+					function (favorites) { //onSuccess
+						$scope.favoritesList = favorites;
+					},
+					function () {} //onError
+				);
+
 			},
 			function() { //onError
 
@@ -346,7 +339,20 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 
 //-------------------episodeController---------------------//
 fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$window', 'CommentsService', 'UsersService', 'EpisodeService', 'ShowsService', function($scope, $routeParams, $window, Comments, Users, Episode, Shows) {
-	$scope.profile = false;
+	addUserToScope($scope, Users, $window, Shows,
+		function(){
+			//find the location of the rating in the users episode_ratings
+			for(var ratingIndex = 0; ratingIndex < $scope.user.episodes_ratings.length; ratingIndex++) {
+				var key;
+				for (key in $scope.user.episodes_ratings[ratingIndex]) break;
+				if(key === epId) {
+					var usersRating = $scope.user.episodes_ratings[ratingIndex][key];
+					$("#user-rating").rating('update', usersRating);
+					break;
+				}
+			}
+		});
+
 	$scope.sorting = 'points';
 
 	var epId = $routeParams.ep_id;
@@ -386,30 +392,6 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 		);
 	});
 
-
-	Users.getProfile(
-		function(data) { //onSuccess
-			$scope.profile = true;
-			$scope.user = data.user;
-
-			console.log("user");
-			console.log($scope.user);
-
-			//find the location of the rating in the users episode_ratings
-			for(var ratingIndex = 0; ratingIndex < $scope.user.episodes_ratings.length; ratingIndex++) {
-				var key;
-				for (key in $scope.user.episodes_ratings[ratingIndex]) break;
-				if(key === epId) {
-					var usersRating = $scope.user.episodes_ratings[ratingIndex][key];
-					$("#user-rating").rating('update', usersRating);
-					break;
-				}
-			}
-
-		},
-		function() {}//onError
-	);
-
 	Episode.getEpisode(epId,
 		function(data) { //onSuccess
 			$scope.episode = data;
@@ -432,9 +414,7 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 		function(data){ //onSuccess
 			$scope.comments = data;
 		},
-		function(data) { //onFailure
-
-		}
+		function(data) {} //onFailure
 	);
 
 	$scope.showParentReplyBox = false;
@@ -532,9 +512,6 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 			function() {} //onError
 		);
 
-
-
-
 		Comments.voteComments(comment_id, valueChange,
 			function(data){ //on success
 				console.log("Vote comment finished: ");
@@ -556,3 +533,33 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 		);
 	};
 }]);
+
+function addUserToScope($scope, Users, $window, Shows, callback) {
+	$scope.logout = function () {
+		Users.logout(
+			function(data) { //onSuccess
+				if(!data.error) {
+					$scope.profile=false;
+					$scope.user = undefined;
+				}
+			},
+			function(data) {}//onError
+		);
+	};
+
+	Users.getProfile(
+		function (data) { //onSuccess
+			$scope.profile = true;
+			$scope.user = data.user;
+			callback(data);
+
+			Shows.getFavoriteShows($scope.user._id,
+				function (favorites) { //onSuccess
+					$scope.favoritesList = favorites;
+				},
+				function () {} //onError
+			);
+		},
+		function () {} //onError
+	);
+}

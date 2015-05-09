@@ -1,10 +1,13 @@
 @import url('http://fonts.googleapis.com/css?family=Bree+Serif|Merriweather');
 @import url('http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css');
 
-
-h1 {
-  font-size: 2.2rem;
-  color: lighten($orange, 25);
+#nav {
+  h1 {
+    color: #333;
+  }
+  h3 {
+    color: #333;
+  }
 }
 
 i {
@@ -119,4 +122,12 @@ i {
 
 .button-downvoted:hover {
   color: #00b3ee;
+}
+
+.display-inline-block {
+  display: inline-block;
+}
+
+.red-text {
+  color: #ff0000;
 }

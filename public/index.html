@@ -29,20 +29,7 @@
 
     <div class="container-fluid">
 
-        <div class="row">
-            <div ng-controller="profileController" class="col-md-10 col-md-offset-2">
-                <a href="#/index">Fandom</a>
-                <a href="#/profile/{{user._id}}">{{user.local.email}}</a>
-                <a ng-click="logout()" class="button small" ng-show="profile" ng-show="profile">Logout</a>
-
-                <a class="btn btn-primary pull-right" ng-show="!profile" href="#/login">Login</a>
-                <a class="btn btn-primary pull-right" ng-show="!profile" href="#/signup">Sign Up</a>
-            </div>
-        </div>
-
-
         <div ng-view></div>
-
 
     </div>
 
