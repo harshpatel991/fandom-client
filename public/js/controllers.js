@@ -78,6 +78,15 @@ fandomControllers.controller('profileCommentsController', ['$scope', '$routePara
 		$scope.isMyProfile = data.user._id == $scope.selectedUserId;
 	});
 
+	Users.getUserProfile($scope.selectedUserId,
+		function (data) { //onSuccess
+			$scope.userProfile = data.data;
+		},
+		function () { //onError
+			//TODO: error message
+		}
+	);
+
 	Comments.getUserComments($scope.selectedUserId,
 		function (data) { //onSuccess
 			$scope.loading = false;
@@ -111,6 +120,15 @@ fandomControllers.controller('profileFavoritesController', ['$scope', '$routePar
 	addUserToScope($scope, Users, $window, Shows, //this will set $scope.user
 		function(data){//callback once User.getUser has been called
 			$scope.isMyProfile = data.user._id == $scope.selectedUserId;
+		}
+	);
+
+	Users.getUserProfile($scope.selectedUserId,
+		function (data) { //onSuccess
+			$scope.userProfile = data.data;
+		},
+		function () { //onError
+			//TODO: error message
 		}
 	);
 
