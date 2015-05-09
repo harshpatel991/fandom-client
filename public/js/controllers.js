@@ -237,7 +237,7 @@ fandomControllers.controller('homeController', ['$scope', '$http', '$window', 'S
 		headerImageIndex = (headerImageIndex + 1) % headerImages.length ;
 		$('#home-header-image').css('background-image', 'url(../data/homeImages/'+headerImages[headerImageIndex]+')');
 		$('#home-header-text-level-1').html(headerLevel1Texts[headerImageIndex]);
-		$('#header-button-text').html('<span class="glyphicon glyphicon-arrow-right"></span> Discuss ' + headerTitles[headerImageIndex] +' now');
+		$('#header-button-text').html('<span class="glyphicon glyphicon-arrow-right"></span> Discuss ' + headerTitles[headerImageIndex]);
 		$("#header-button-text").attr("href", "#/show/"+headerLinks[headerImageIndex]);
 	}
 
@@ -517,6 +517,50 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 				console.log("Add child comment failed: " + data);
 			}
 		);
+	};
+
+	$scope.undoBy = function(comment_id, valueChange) {
+
+		if(valueChange == -1) { //we are removing an upvote
+			var commentUpvotedIndex = $scope.user.comments_upvoted.indexOf(comment_id);
+
+			if (commentUpvotedIndex !== -1) {
+				$scope.user.comments_upvoted.splice(commentUpvotedIndex, 1); //remove from users array
+				if ($scope.user.comments_upvoted.length === 0) { //needed so we can send an empty array
+					$scope.user.comments_upvoted = [""];
+				}
+			}
+		}
+
+		else if (valueChange == 1) { //we are removing a down vote
+			var commentDownvotedIndex = $scope.user.comments_downvoted.indexOf(comment_id);
+			if (commentDownvotedIndex !== -1) {
+				$scope.user.comments_downvoted.splice(commentDownvotedIndex, 1); //remove from users array
+				if ($scope.user.comments_downvoted.length === 0) { //needed so we can send an empty array
+					$scope.user.comments_downvoted = [""];
+				}
+			}
+		}
+
+		Users.editUser($scope.user, //save the user
+			function(data) { //onSuccess
+				$scope.user = data;
+			},
+			function() {} //onError
+		);
+
+		Comments.voteComments(comment_id, valueChange, //add/subtract from the comment
+			function(data){ //on success
+				Comments.getComments($scope.episode._id, //reload the comments
+					function(data){ //onSuccess
+						$scope.comments = data;
+					},
+					function(data) {} //onFailure
+				);
+			},
+			function(data){ console.log("Undo vote comment failed: " + data);} //onFailure
+		);
+
 	};
 
 	$scope.points = function(comment_id, valueChange){

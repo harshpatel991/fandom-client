@@ -47,7 +47,7 @@
 <div class="row">
 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
-<div class="row">
+<div class="row episode-header">
     <div class="col-sm-4">
         <img class="show-image" ng-show="!episode.img_filename" ng-src="{{episode.img_url}}"> <!-- Show the show image only if it has been loaded, otherwise display the episode image -->
         <img class="show-image" ng-show="episode.img_filename" src="./data/images/{{episode.img_filename}}">
@@ -78,7 +78,7 @@
             <button ng-click="hideCommentBox(-1)" class="btn btn-danger btn-sm">Cancel</button>
         </div>
 
-        <div ng-show="comments.length == 0">
+        <div ng-show="comments.length == 0" class="no-comments-text">
             <h2 class="text-center">No comments here :( <br>
             Post a comment to start a conversation. </h2>
         </div>
@@ -99,10 +99,10 @@
             <div class="media" id="c{{parentcomment._id}}">
                 <div class="media-left media-middle">
                     <a ng-click="points(parentcomment._id,1)" ng-show="!profile || user.comments_upvoted.indexOf(parentcomment._id) === -1" class="button-vote"><span class="glyphicon glyphicon-upload"></span></a>
-                    <a ng-show="profile && user.comments_upvoted.indexOf(parentcomment._id) !== -1" class="button-vote button-upvoted"><span class="glyphicon glyphicon-upload"></span></a> <br>
+                    <a ng-click="undoBy(parentcomment._id,-1)"  ng-show="profile && user.comments_upvoted.indexOf(parentcomment._id) !== -1" class="button-vote button-upvoted"><span class="glyphicon glyphicon-upload"></span></a> <br>
                     <div class="text-center"><b>{{parentcomment.points}}</b></div>
                     <a ng-click="points(parentcomment._id, -1)" ng-show="!profile || user.comments_downvoted.indexOf(parentcomment._id) === -1" class="button-vote"><span class="glyphicon glyphicon-download"></span></a>
-                    <a ng-show="profile && user.comments_downvoted.indexOf(parentcomment._id) !== -1" class="button-vote button-downvoted"><span class="glyphicon glyphicon-download"></span></a>
+                    <a ng-click="undoBy(parentcomment._id,1)" ng-show="profile && user.comments_downvoted.indexOf(parentcomment._id) !== -1" class="button-vote button-downvoted"><span class="glyphicon glyphicon-download"></span></a>
                 </div>
                 <div class="media-body media-middle">
 
@@ -130,10 +130,10 @@
                 <div class="media" id="c{{childcomment._id}}">
                     <div class="media-left media-middle">
                         <a ng-click="points(childcomment._id, 1)"  ng-show="!profile || user.comments_upvoted.indexOf(childcomment._id) === -1"  class="button-vote"><span class="glyphicon glyphicon-upload"></span></a>
-                        <a ng-show="profile && user.comments_upvoted.indexOf(childcomment._id) !== -1" class="button-vote button-upvoted"><span class="glyphicon glyphicon-upload"></span></a> <br>
+                        <a ng-click="undoBy(childcomment._id,-1)" ng-show="profile && user.comments_upvoted.indexOf(childcomment._id) !== -1" class="button-vote button-upvoted"><span class="glyphicon glyphicon-upload"></span></a> <br>
                         <div class="text-center"><b>{{childcomment.points}}</b></div>
                         <a ng-click="points(childcomment._id, -1)" ng-show="!profile || user.comments_downvoted.indexOf(childcomment._id) === -1" class="button-vote"><span class="glyphicon glyphicon-download"></span></a>
-                        <a ng-show="profile && user.comments_downvoted.indexOf(childcomment._id) !== -1" class="button-vote button-downvoted"><span class="glyphicon glyphicon-download"></span></a>
+                        <a ng-click="undoBy(childcomment._id,1)" ng-show="profile && user.comments_downvoted.indexOf(childcomment._id) !== -1" class="button-vote button-downvoted"><span class="glyphicon glyphicon-download"></span></a>
                     </div>
                     <div class="media-body media-middle">
                         {{childcomment.text}}
