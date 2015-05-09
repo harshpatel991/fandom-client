@@ -38,6 +38,23 @@ angular.module('fandomServices', [])
                 });
             },
 
+            changePassword: function(email, newPassword, onSuccess, onError) {
+                $http.defaults.withCredentials = true; //required so that http will send the authentication cookies with request
+
+                $http({
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    url: apiLocation + '/change_password/',
+                    data: $.param({email: email, password: newPassword})
+                })
+                .success(function (data, status, headers, config) {
+                    onSuccess(data);
+                })
+                .error(function (data, status, headers, config) {
+                    onError(data);
+                });
+            },
+
             logout: function(onSuccess, onError) {
                 $http.defaults.withCredentials = true; //required so that http will send the authentication cookies with request
 

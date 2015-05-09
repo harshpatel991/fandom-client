@@ -2,7 +2,7 @@ var fandomControllers = angular.module('fandomControllers', []);
 
 var apiLocation = 'http://localhost:4000/api';
 
-fandomControllers.controller('profileController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', function($scope, $routeParams, $http, $window, Users) {
+fandomControllers.controller('profileController', ['$scope', '$http', '$window', 'UsersService', function($scope, $http, $window, Users) {
 	$scope.profile = false;
 
 	$scope.logout = function () {
@@ -17,42 +17,84 @@ fandomControllers.controller('profileController', ['$scope', '$routeParams', '$h
 			}
 		);
 	};
-		Users.getProfile(
-			function (data) { //onSuccess
-				console.log(data);
 
-				$scope.profile = true;
-				$scope.user = data.user;
-			},
-			function () { //onError
-				//TODO: error message
-			}
-		);
-}]);
-
-fandomControllers.controller('profileUserController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'ShowsService', function($scope, $routeParams, $http, $window, Users, Shows) {
-	var userId = $routeParams.user_id;
-
-	Users.getUserProfile(userId,
+	Users.getProfile(
 		function (data) { //onSuccess
-			console.log('user profile');
 			console.log(data);
 
+			$scope.profile = true;
+			$scope.user = data.user;
+		},
+		function () { //onError
+			//TODO: error message
+		}
+	);
+
+}]);
+
+fandomControllers.controller('profileUserController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'CommentsService', function($scope, $routeParams, $http, $window, Users, Comments) {
+	$scope.selectedUserId = $routeParams.user_id;
+	$scope.numberUpvotes = 0;
+	$scope.isMyProfile = false;
+
+	Users.getUserProfile($scope.selectedUserId,
+		function (data) { //onSuccess
 			$scope.userProfile = data.data;
 		},
 		function () { //onError
 			//TODO: error message
 		}
 	);
+
+	Comments.getUserComments($scope.selectedUserId,
+		function (data) { //onSuccess
+			var userComments = data;
+			for (var i = 0; i < userComments.length; i++){
+				$scope.numberUpvotes += parseInt(userComments[i].points);
+			}
+		},
+		function () { //onError
+			//TODO: error message
+		}
+	);
+
+	$scope.profile = false;
+
+	Users.getProfile(
+		function (data) { //onSuccess
+			$scope.isMyProfile = data.user._id == $scope.selectedUserId;
+		},
+		function () { //onError
+			//TODO: error message
+		}
+	);
+
+	$scope.changePassword = function(){
+		var newPassword = $scope.newPassword.valueOf();
+		var confirmPassword = $scope.confirmPassword.valueOf()
+		console.log(newPassword);
+		console.log(confirmPassword);
+		if (newPassword != confirmPassword || newPassword === undefined){
+			console.log('not equal');
+			return;
+		}
+		Users.changePassword($scope.userProfile.local.email, newPassword, function(data){
+			//Success
+			console.log('password changed');
+		},
+		function(data){
+			//Error
+			console.log('password change error');
+			console.log(data);
+		})
+	}
 }]);
 
-fandomControllers.controller('profileCommentsController', ['$scope', '$routeParams', '$http', '$window', 'CommentsService', function($scope, $routeParams, $http, $window, Comments) {
+fandomControllers.controller('profileCommentsController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'CommentsService', function($scope, $routeParams, $http, $window, Users, Comments) {
 	$scope.selectedUserId = $routeParams.user_id;
 
 	Comments.getUserComments($scope.selectedUserId,
 		function (data) { //onSuccess
-			console.log(data);
-
 			$scope.userComments = data;
 			$scope.userComments.sort(function(a,b){return new Date(b.post_time) - new Date(a.post_time);});
 		},
@@ -62,8 +104,9 @@ fandomControllers.controller('profileCommentsController', ['$scope', '$routePara
 	);
 }]);
 
-fandomControllers.controller('profileFavoritesController', ['$scope', '$routeParams', '$http', '$window', 'ShowsService', function($scope, $routeParams, $http, $window, Shows) {
+fandomControllers.controller('profileFavoritesController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'ShowsService', function($scope, $routeParams, $http, $window, Users, Shows) {
 	$scope.selectedUserId = $routeParams.user_id;
+	$scope.isMyProfile = false;
 
 	Shows.getFavoriteShows($scope.selectedUserId,
 		function (data) { //onSuccess
@@ -73,6 +116,53 @@ fandomControllers.controller('profileFavoritesController', ['$scope', '$routePar
 			//TODO: error message
 		}
 	);
+
+	Users.getProfile(
+		function (data) { //onSuccess
+			$scope.profile = true;
+			$scope.isMyProfile = data.user._id == $scope.selectedUserId;
+			$scope.user = data.user;
+		},
+		function () { //onError
+			//TODO: error message
+		}
+	);
+
+	$scope.removeFromFavorites = function(showId) {
+		if ($scope.userFavorites === undefined || $scope.user === undefined || $scope.selectedUserId != $scope.user._id){
+			return;
+		}
+
+		for (var index = 0; index < $scope.userFavorites.length; index++) { //find the index where this show_id exists and remove it
+			if ($scope.userFavorites[index]._id == showId) {
+				$scope.userFavorites.splice(index, 1);
+				break;
+			}
+		}
+
+		for (index = 0; index < $scope.user.favorites.length; index++) { //find the index where this show_id exists and remove it
+			if ($scope.user.favorites[index] == showId) {
+				$scope.user.favorites.splice(index, 1);
+				break;
+			}
+		}
+
+		if($scope.user.favorites.length === 0) {
+			$scope.user.favorites = [""];
+		}
+
+		saveUser();
+	};
+
+	function saveUser() {
+		Users.editUser($scope.user,
+			function(data) { //onSuccess
+				$scope.user = data;
+			},
+			function() { //onError
+			}
+		);
+	}
 }]);
 
 fandomControllers.controller('loginController', ['$scope', '$http', '$window', 'UsersService', function($scope, $http, $window, Users) {
