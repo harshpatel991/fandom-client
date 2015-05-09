@@ -68,10 +68,10 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <h2 style="display: inline-block;">Comments</h2>
+        <h2 style="display: inline-block;">Comments</h2> <br>
         <!-- Add parent Comment -->
-        <button style="display: inline-block;" class="btn btn-default pull-right" ng-click="clickReply(-1)" ng-show="profile">Reply</button>
-        <a class="btn btn-default pull-right" ng-show="!profile" href="#/login">Login To Comment</a> <br>
+        <button style="display: inline-block;" class="btn btn-default" ng-click="clickReply(-1)" ng-show="profile">New Comment</button>
+        <a class="btn btn-default" ng-show="!profile" href="#/login">Login To Comment</a> <br>
 
         <div ng-show="showParentReplyBox">
             <textarea ng-model="parentReplyBoxText" rows="8" class="form-control episode-textarea" placeholder="Your reply..."></textarea>
