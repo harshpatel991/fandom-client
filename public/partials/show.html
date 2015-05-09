@@ -81,11 +81,11 @@
         <div ng-repeat="aSeason in allSeasons">
 
             <h2 class="media-heading">{{aSeason.name}}</h2>
-            <a ng-repeat="aShow in allEpisodes" ng-if="aShow.season_number == aSeason.season_number" href="#/episode/{{aShow._id}}">
-                <h4 class="episode-list-item">{{aShow.name}}</h4>
+            <div ng-repeat="aShow in allEpisodes" ng-if="aShow.season_number == aSeason.season_number">
+                <a href="#/episode/{{aShow._id}}"><h4 class="episode-list-item">{{aShow.name}}</h4></a>
                 <input style="display:block;" type="number" class="rating" step="1" size="xs" data-show-caption="false" data-show-clear="false" data-size="xs" data-rtl="false" value="{{aShow.rating_sum/aShow.rating_count}}" readonly="true">
                 <br>
-            </a>
+            </div>
             <hr>
 
         </div>

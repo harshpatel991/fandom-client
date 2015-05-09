@@ -427,6 +427,7 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 			$("#average-rating").rating();
 			Shows.getShow($scope.episode.show_id,
 				function(show) { //onSuccess
+					$scope.show = show;
 					$scope.showName = show.name;
 					if(data.img_url === "") { //if the episode doesn't have an image, load the shows image
 						$scope.episode.img_filename = show.img_filename;
@@ -565,6 +566,7 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 
 	$scope.points = function(comment_id, valueChange){
 		if($scope.profile === false) //not logged in
+			alert("Please login to vote on comments.");
 			return;
 
 		//check if this user has already upvoted/downvoted, remove if so
