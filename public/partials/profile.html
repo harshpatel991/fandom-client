@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-xs-12">
 
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -30,7 +30,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a ng-show="profile" href="#/profile/{{user._id}}"><span class="glyphicon glyphicon-user"></span> {{user.local.email}}</a></li>
 
-                        <li><a ng-click="logout()" ng-show="profile" ng-show="profile"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                        <li><a ng-click="logout()" href="javascript:;" ng-show="profile"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 
                         <li><a ng-show="!profile" href="#/login">Login</a></li>
                         <li><a ng-show="!profile" href="#/signup">Sign Up</a></li>
@@ -43,61 +43,64 @@
 </div>
 <!--NAV BAR END-->
 
+<div class="body-below-nav">
 <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
 
-<h1 ng-show="userProfile">Profile</h1>
-<a ng-click="logout()" class="button small" ng-show="profile">Logout</a>
+    <h1 ng-show="userProfile">Profile</h1>
+    <a ng-click="logout()" class="button small" ng-show="profile">Logout</a>
 
-<!-- PROFILE INFORMATION -->
-<div class="panel panel-default" ng-show="userProfile">
-    <div class="panel-body">
+    <!-- PROFILE INFORMATION -->
+    <div class="panel panel-default" ng-show="userProfile">
+        <div class="panel-body">
 
-    <div role="tabpanel">
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#/profile/{{selectedUserId}}">Profile</a></li>
-            <li role="presentation"><a href="#/profile_comments/{{selectedUserId}}">Comments</a></li>
-            <li role="presentation"><a href="#/profile_favorites/{{selectedUserId}}">Favorites</a></li>
-        </ul>
+        <div role="tabpanel">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#/profile/{{selectedUserId}}">Profile</a></li>
+                <li role="presentation"><a href="#/profile_comments/{{selectedUserId}}">Comments</a></li>
+                <li role="presentation"><a href="#/profile_favorites/{{selectedUserId}}">Favorites</a></li>
+            </ul>
 
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <h3>{{userProfile.local.email}}</h3>
-            <p>
-                <strong>Pops</strong>: {{numberUpvotes}}<br>
-            </p>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <h3>{{userProfile.local.email}}</h3>
+                <p>
+                    <strong>Pops</strong>: {{numberUpvotes}}<br>
+                </p>
 
-            <button ng-if="isMyProfile" class="btn btn-default" type="button" data-toggle="collapse" data-target="#changePassword" aria-expanded="false" aria-controls="changePassword">
-                Change Password
-            </button>
-            <div class="collapse row" id="changePassword">
-                <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <form name="changePasswordForm" novalidate ng-submit="changePassword()">
-                            <div class="form-group">
-                                <label>New Password</label>
-                                <input type="password" name="newPassword" id="newPassword" class="form-control" ng-model="newPassword" required />
-                            </div>
-                            <div class="form-group">
-                                <label>Confirm Password</label>
-                                <input type="password" name="confirmPassword" id="confirmPassword" class="form-control"
-                                       ng-model="confirmPassword"
-                                       ng-required pw-check="newPassword" />
-                                <div ng-messages="Passwords don't match"></div>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Change Password</button>
-                            </div>
-                        </form>
+                <button ng-if="isMyProfile" class="btn btn-default" type="button" data-toggle="collapse" data-target="#changePassword" aria-expanded="false" aria-controls="changePassword">
+                    Change Password
+                </button>
+                <h5 class="text-success" id="passwordChangeSuccess"></h5>
+                <div class="collapse row" id="changePassword">
+                    <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <form name="changePasswordForm" novalidate ng-submit="changePassword()">
+                                <div class="form-group">
+                                    <label>New Password</label>
+                                    <input type="password" name="newPassword" id="newPassword" class="form-control" ng-model="newPassword" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Confirm Password</label>
+                                    <input type="password" name="confirmPassword" id="confirmPassword" class="form-control"
+                                           ng-model="confirmPassword"
+                                           ng-required pw-check="newPassword" />
+                                    <h5 class="text-danger" id="passwordChangeError"></h5>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">Change</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-            </div>
+                    </div>
                 </div>
-        </div>
             </div>
         </div>
+        </div>
+    </div>
     </div>
 </div>
-        </div>
-    </div>
+</div>

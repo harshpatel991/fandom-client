@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-xs-12">
 
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -30,7 +30,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a ng-show="profile" href="#/profile/{{user._id}}"><span class="glyphicon glyphicon-user"></span> {{user.local.email}}</a></li>
 
-                        <li><a ng-click="logout()" ng-show="profile" ng-show="profile"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                        <li><a ng-click="logout()" href="javascript:;" ng-show="profile"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 
                         <li><a ng-show="!profile" href="#/login">Login</a></li>
                         <li><a ng-show="!profile" href="#/signup">Sign Up</a></li>
@@ -43,30 +43,33 @@
 </div>
 <!--NAV BAR END-->
 
+<div class="body-below-nav">
 <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-<h1>Favorites</h1>
+        <h1>Favorites</h1>
 
-<!-- PROFILE INFORMATION -->
-<div class="panel panel-default">
-    <div class="panel-body">
-        <div role="tabpanel">
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation"><a href="#/profile/{{selectedUserId}}">Profile</a></li>
-                <li role="presentation"><a href="#/profile_comments/{{selectedUserId}}">Comments</a></li>
-                <li role="presentation" class="active"><a href="#/profile_favorites/{{selectedUserId}}">Favorites</a></li>
-            </ul>
+        <!-- PROFILE INFORMATION -->
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div role="tabpanel">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation"><a href="#/profile/{{selectedUserId}}">Profile</a></li>
+                        <li role="presentation"><a href="#/profile_comments/{{selectedUserId}}">Comments</a></li>
+                        <li role="presentation" class="active"><a href="#/profile_favorites/{{selectedUserId}}">Favorites</a></li>
+                    </ul>
 
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <div class="block-grid-xs-2 block-grid-sm-3 block-grid-lg-4">
-                    <div class="block-grid-item" ng-repeat="show in userFavorites">
-                        <div class="thumbnail">
-                            <a href="#/show/{{show._id}}"><img ng-src="./data/images/{{show.img_filename}}"></a>
-                            <div class="caption">
-                                <a class="episode-list-item" href="#/show/{{show._id}}"><h3>{{show.name}}</h3></a>
-                                <button ng-if="isMyProfile" ng-click="removeFromFavorites(show._id)" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span> Remove</button>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="block-grid-xs-2 block-grid-sm-3 block-grid-lg-4">
+                            <div class="block-grid-item" ng-repeat="show in userFavorites">
+                                <div class="thumbnail">
+                                    <a href="#/show/{{show._id}}"><img ng-src="./data/images/{{show.img_filename}}"></a>
+                                    <div class="caption">
+                                        <a class="episode-list-item" href="#/show/{{show._id}}"><h3>{{show.name}}</h3></a>
+                                        <button ng-if="isMyProfile" ng-click="removeFromFavorites(show._id)" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span> Remove</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -75,5 +78,4 @@
         </div>
     </div>
 </div>
-        </div>
 </div>

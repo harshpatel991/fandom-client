@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-xs-12">
 
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -30,7 +30,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a ng-show="profile" href="#/profile/{{user._id}}"><span class="glyphicon glyphicon-user"></span> {{user.local.email}}</a></li>
 
-                        <li><a ng-click="logout()" ng-show="profile" ng-show="profile"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                        <li><a ng-click="logout()" href="javascript:;" ng-show="profile"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 
                         <li><a ng-show="!profile" href="#/login">Login</a></li>
                         <li><a ng-show="!profile" href="#/signup">Sign Up</a></li>
@@ -43,6 +43,7 @@
 </div>
 <!--NAV BAR END-->
 
+<div class="body-below-nav">
 <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
         <h1>Comments</h1>
@@ -69,7 +70,9 @@
                                 <div class="media-body media-middle">
                                     <div>{{comment.text}}</div>
                                     <h6>{{comment.post_time}}</h6>
-                                    <a href="#/episode/{{comment.episode_id}}/c{{comment._id}}"><h6>View - <i>{{comment.show_name}} ('{{comment.episode_name}}')</i></h6></a>
+                                    <!--<i>{{comment.show_name}} ('{{comment.episode_name}}')</i>-->
+                                    <h6 style="display: inline-block"><a  href="#/episode/{{comment.episode_id}}/c{{comment._id}}">View Comment</a></h6> -
+                                    <h6 style="display: inline-block"><a href="#/episode/{{comment.episode_id}}"><i>{{comment.show_name}} ('{{comment.episode_name}}')</i></a></h6>
                                 </div>
                             </div>
                         </div>
@@ -78,4 +81,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>

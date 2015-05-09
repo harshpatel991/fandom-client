@@ -14,6 +14,8 @@ fandomControllers.controller('profileUserController', ['$scope', '$routeParams',
 		}
 	);
 
+	$scope.mismatchError = true;
+	$scope.passwordChangeSuccess = true;
 	$scope.selectedUserId = $routeParams.user_id;
 	$scope.numberUpvotes = 0;
 	$scope.isMyProfile = false;
@@ -43,19 +45,28 @@ fandomControllers.controller('profileUserController', ['$scope', '$routeParams',
 		var newPassword = $scope.newPassword.valueOf();
 		var confirmPassword = $scope.confirmPassword.valueOf();
 		if (newPassword != confirmPassword || newPassword === undefined){
-			console.log('not equal');
+			$('#newPassword').val('');
+			$('#confirmPassword').val('');
+			$('#passwordChangeError').text('Passwords do not match.');
+			$('#passwordChangeSuccess').text('');
 			return;
 		}
 		Users.changePassword($scope.userProfile.local.email, newPassword, function(data){
 			//Success
-			console.log('password changed');
+			$('#newPassword').val('');
+			$('#confirmPassword').val('');
+			$('#passwordChangeError').text('');
+			$('#passwordChangeSuccess').text('Password successfully changed!');
+			$('#changePassword').collapse('hide');
 		},
 		function(data){
 			//Error
-			console.log('password change error');
-			console.log(data);
+			$('#newPassword').val('');
+			$('#confirmPassword').val('');
+			$('#passwordChangeError').text('Error: ' + data);
+			$('#passwordChangeSuccess').text('');
 		})
-	}
+	};
 }]);
 
 fandomControllers.controller('profileCommentsController', ['$scope', '$routeParams', '$http', '$window', 'UsersService', 'CommentsService', 'ShowsService', function($scope, $routeParams, $http, $window, Users, Comments, Shows) {
@@ -552,6 +563,7 @@ function addUserToScope($scope, Users, $window, Shows, callback) {
 				if(!data.error) {
 					$scope.profile=false;
 					$scope.user = undefined;
+					$window.location = '#/home';
 				}
 			},
 			function(data) {}//onError
