@@ -73,6 +73,7 @@ fandomControllers.controller('profileCommentsController', ['$scope', '$routePara
 	$scope.commentsEmpty = false;
 	$scope.loading = true;
 	$scope.numberUpvotes = 0;
+	$scope.sorting = 'post_time';
 
 	addUserToScope($scope, Users, $window, Shows, function(data){
 		$scope.isMyProfile = data.user._id == $scope.selectedUserId;
@@ -91,7 +92,6 @@ fandomControllers.controller('profileCommentsController', ['$scope', '$routePara
 		function (data) { //onSuccess
 			$scope.loading = false;
 			$scope.userComments = data;
-			$scope.userComments.sort(function(a,b){return new Date(b.post_time) - new Date(a.post_time);});
 
 			if ($scope.userComments === undefined || $scope.userComments.length === 0){
 				$scope.commentsEmpty = true;

@@ -61,9 +61,18 @@
 
                     <!-- Tab panes -->
                     <div class="tab-content">
-                        <h6 ng-show="loading" style="margin-left: 15px;">Loading...</h6>
-                        <h3 ng-show="commentsEmpty" style="margin-left: 15px;">No Comments</h3>
-                        <div ng-repeat="comment in userComments" class="comment-user">
+                        <h6 class="no-comments-text" ng-show="loading" style="margin-left: 15px;">Loading...</h6>
+                        <h3 class="no-comments-text" ng-show="commentsEmpty" style="margin-left: 15px;">No Comments</h3>
+
+                        <div class="input-group" ng-show="comments.length !== 0">
+                            <label for="sorting">Order By</label>
+                            <select id="sorting" ng-model="sorting" class="form-control">
+                                <option value="points">Points</option>
+                                <option value="post_time">Time</option>
+                            </select>
+                        </div>
+
+                        <div ng-repeat="comment in userComments | orderBy:sorting:-1" class="comment-user">
                             <div class="media">
                                 <div class="media-left media-middle">
                                     <div class="text-center"><b>{{comment.points}}</b></div>

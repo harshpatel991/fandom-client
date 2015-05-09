@@ -61,8 +61,8 @@
 
                     <!-- Tab panes -->
                     <div class="tab-content">
-                        <h6 ng-show="loading" style="margin-left: 15px; margin-bottom: 35px">Loading...</h6>
-                        <h3 ng-show="favoritesEmpty" style="margin-left: 15px; margin-bottom: 35px">No Favorites</h3>
+                        <h6 class="no-comments-text" ng-show="loading" style="margin-left: 15px; margin-bottom: 35px">Loading...</h6>
+                        <h3 class="no-comments-text" ng-show="favoritesEmpty" style="margin-left: 15px; margin-bottom: 35px">No Favorites</h3>
                         <div class="block-grid-xs-2 block-grid-sm-3 block-grid-lg-4">
 
                             <div class="block-grid-item" ng-repeat="show in userFavorites">
