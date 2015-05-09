@@ -135,4 +135,30 @@ h1 {
   margin-left: 50px;
   margin-right: 50px;
   padding: 10px 10px;
-  background-color: rgba(200, 200, 200, 0.3); }
+  background-color: rgba(216, 216, 216, 0.3); }
+
+/* line 88, ../../sass/_base.scss */
+.button-vote {
+  margin-top: 5px;
+  font-size: 2em;
+  color: #646464; }
+
+/* line 94, ../../sass/_base.scss */
+.button-vote:hover {
+  color: #3f3f3f; }
+
+/* line 98, ../../sass/_base.scss */
+.button-upvoted {
+  color: #f0592c; }
+
+/* line 102, ../../sass/_base.scss */
+.button-upvoted:hover {
+  color: #f0592c; }
+
+/* line 106, ../../sass/_base.scss */
+.button-downvoted {
+  color: #00b3ee; }
+
+/* line 110, ../../sass/_base.scss */
+.button-downvoted:hover {
+  color: #00b3ee; }

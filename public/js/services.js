@@ -151,12 +151,12 @@ angular.module('fandomServices', [])
 
             },
 
-            voteComments: function(comment_id, type, onSuccess, onError){
+            voteComments: function(comment_id, valueChange, onSuccess, onError){
                 $http({
                     method: 'PUT',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     url: apiLocation + '/vote_comments/' + comment_id,
-                    data: $.param({IncOrDec: type})
+                    data: $.param({valueChange: valueChange})
                 })
                 .success(function(data, status, headers, config) {
                     onSuccess(data["data"]);

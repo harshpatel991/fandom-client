@@ -21,14 +21,14 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <h2>Comments</h2>
+        <h2 style="display: inline-block;">Comments</h2>
         <!-- Add parent Comment -->
-        <button class="btn btn-default pull-right" ng-click="clickReply(-1)" ng-show="profile">Reply</button>
+        <button style="display: inline-block;" class="btn btn-default pull-right" ng-click="clickReply(-1)" ng-show="profile">Reply</button>
         <a class="btn btn-default pull-right" ng-show="!profile" href="#/login">Login To Comment</a> <br>
 
         <div ng-show="showParentReplyBox">
             <textarea ng-model="parentReplyBoxText" rows="8" class="form-control episode-textarea" placeholder="Your reply..."></textarea>
-            <button ng-click="submitParentComment(-1)" class="btn btn-primary btn-sm">Submit</button>
+            <button ng-click="submitParentComment()" class="btn btn-primary btn-sm">Submit</button>
             <button ng-click="hideCommentBox(-1)" class="btn btn-danger btn-sm">Cancel</button>
         </div>
 
@@ -37,15 +37,30 @@
             Post a comment to start a conversation. </h2>
         </div>
 
-        <!-- All the comment -->
+        <!-- PRINT OUT PARENT COMMENTS -->
         <div ng-repeat="parentcomment in comments" class="comment-parent" ng-if="parentcomment.parent_id == -1">
-            <div>
-                <div>{{parentcomment.text}}</div>
-                <div>{{parentcomment.post_time}}</div>
+
+
+            <div class="media">
+                <div class="media-left media-middle">
+                    <a ng-click="points(parentcomment._id,1)" ng-show="!profile || user.comments_upvoted.indexOf(parentcomment._id) === -1" class="button-vote"><span class="glyphicon glyphicon-upload"></span></a>
+                    <a ng-show="profile && user.comments_upvoted.indexOf(parentcomment._id) !== -1" class="button-vote button-upvoted"><span class="glyphicon glyphicon-upload"></span></a> <br>
+                    <div class="text-center"><b>{{parentcomment.points}}</b></div>
+                    <a ng-click="points(parentcomment._id, -1)" ng-show="!profile || user.comments_downvoted.indexOf(parentcomment._id) === -1" class="button-vote"><span class="glyphicon glyphicon-download"></span></a>
+                    <a ng-show="profile && user.comments_downvoted.indexOf(parentcomment._id) !== -1" class="button-vote button-downvoted"><span class="glyphicon glyphicon-download"></span></a>
+                </div>
+                <div class="media-body media-middle">
+
+                    <div>{{parentcomment.text}}</div>
+                    <h6>{{parentcomment.post_time}}</h6>
+
+                    <!-- reply to parent comment button -->
+                    <button ng-click="clickReply($index)" class="btn btn-primary btn-sm" ng-show="profile">Reply</button>
+
+                </div>
             </div>
 
-            <!-- reply button -->
-            <button ng-click="clickReply($index)" class="btn btn-primary btn-sm" ng-show="profile">Reply</button>
+
             <!-- reply box -->
             <div ng-show="showChildReplyBox[$index]">
                 <textarea ng-model="replyBoxText[$index]" rows="8" class="form-control episode-textarea" placeholder="Your reply..."></textarea>
@@ -53,10 +68,23 @@
                 <button ng-click="hideCommentBox($index)" class="btn btn-danger btn-sm">Cancel</button>
             </div>
 
+            <!--PRINT OUT CHILD COMMENTS-->
             <div ng-repeat="childcomment in comments" class="comment-child" ng-if="childcomment.parent_id == parentcomment._id">
-                <button ng-click="points(childcomment._id,'increase')">Good</button>{{childcomment.points}}<button ng-click="points(childcomments._id, 'decrease')">Suck</button>
-                {{childcomment.text}} <br>
-                <h6>{{childcomment.post_time}}</h6>
+
+                <div class="media">
+                    <div class="media-left media-middle">
+                        <a ng-click="points(childcomment._id, 1)"  ng-show="!profile || user.comments_upvoted.indexOf(childcomment._id) === -1"  class="button-vote"><span class="glyphicon glyphicon-upload"></span></a>
+                        <a ng-show="profile && user.comments_upvoted.indexOf(childcomment._id) !== -1" class="button-vote button-upvoted"><span class="glyphicon glyphicon-upload"></span></a> <br>
+                        <div class="text-center"><b>{{childcomment.points}}</b></div>
+                        <a ng-click="points(childcomment._id, -1)" ng-show="!profile || user.comments_downvoted.indexOf(childcomment._id) === -1" class="button-vote"><span class="glyphicon glyphicon-download"></span></a>
+                        <a ng-show="profile && user.comments_downvoted.indexOf(childcomment._id) !== -1" class="button-vote button-downvoted"><span class="glyphicon glyphicon-download"></span></a>
+                    </div>
+                    <div class="media-body media-middle">
+                        {{childcomment.text}}
+                        <h6>{{childcomment.post_time}}</h6>
+                    </div>
+                </div>
+
 
             </div>
 

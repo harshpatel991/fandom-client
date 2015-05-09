@@ -82,5 +82,31 @@ h1 {
   margin-right: 50px;
 
   padding: 10px 10px;
-  background-color: rgba(200, 200, 200, .3);
+  background-color: rgba(216, 216, 216, 0.30);
+}
+
+.button-vote {
+  margin-top: 5px;
+  font-size: 2em;
+  color: #646464;
+}
+
+.button-vote:hover{
+  color: #3f3f3f;
+}
+
+.button-upvoted {
+  color: #f0592c;
+}
+
+.button-upvoted:hover {
+  color: #f0592c;
+}
+
+.button-downvoted {
+  color: #00b3ee;
+}
+
+.button-downvoted:hover {
+  color: #00b3ee;
 }

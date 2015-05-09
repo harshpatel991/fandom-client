@@ -218,7 +218,7 @@ fandomControllers.controller('homeController', ['$scope', '$http', '$window', 'S
 
 	setInterval(function(){
 		setHeader();
-	},4500);
+	},7000);
 	setHeader();
 
 	Shows.getAllShows(
@@ -345,6 +345,7 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 
 //-------------------episodeController---------------------//
 fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$window', 'CommentsService', 'UsersService', 'EpisodeService', 'ShowsService', function($scope, $routeParams, $window, Comments, Users, Episode, Shows) {
+	$scope.profile = false;
 	var epId = $routeParams.ep_id;
 	$("#user-rating").rating(); //initialize user ratings
 
@@ -387,6 +388,9 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 		function(data) { //onSuccess
 			$scope.profile = true;
 			$scope.user = data.user;
+
+			console.log("user");
+			console.log($scope.user);
 
 			//find the location of the rating in the users episode_ratings
 			for(var ratingIndex = 0; ratingIndex < $scope.user.episodes_ratings.length; ratingIndex++) {
@@ -461,36 +465,73 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 
 	$scope.submitParentComment = function() { //adding a new parent level comment
 		var textBoxContent = $scope.parentReplyBoxText;
-
 		Comments.addComment(textBoxContent, $scope.user._id, $scope.episode._id, -1,
 			function(data) { //onSuccess
 				console.log("Add parent comment finished: " + data);
-				$scope.comments.unshift(data);
+				$scope.comments.unshift(data); //add to begining of array
 				$scope.hideCommentBox(-1);
 			},
 			function(data) { //onFailure
+				console.log("Add parent comment failed: " + data);
 			}
 		);
 	};
 
 	$scope.submitReplyComment = function(id) { //adding a new reply to a comment
 		var textBoxContent = $scope.replyBoxText[id];
-		console.log("Posting: " + $scope.replyBoxText[id]);
 		var replyingTo = $scope.comments[id];
 		Comments.addComment(textBoxContent, $scope.user._id, $scope.episode._id, replyingTo._id,
 			function(data) { //onSuccess
 				console.log("Add comment finished: " + data);
-				$scope.comments.push(data);
+				$scope.comments.unshift(data);
 				$scope.hideCommentBox(id);
 			},
 			function(data) { //onFailure
-				console.log("Add comment failed: " + data);
+				console.log("Add child comment failed: " + data);
 			}
 		);
 	};
 
-	$scope.points = function(comment_id, type){
-		Comments.voteComments(comment_id, type, 
+	$scope.points = function(comment_id, valueChange){
+		//check if this user has already upvoted/downvoted, remove if so
+
+		var commentUpvotedIndex = $scope.user.comments_upvoted.indexOf(comment_id);
+		var commentDownvotedIndex = $scope.user.comments_downvoted.indexOf(comment_id);
+
+		if(commentUpvotedIndex !== -1) { //there's already been a vote so double up and send that
+			valueChange = valueChange * 2;
+			$scope.user.comments_upvoted.splice(commentUpvotedIndex, 1); //remove from users array
+			if($scope.user.comments_upvoted.length === 0) { //needed so we can send an empty array
+				$scope.user.comments_upvoted = [""];
+			}
+		}
+
+		if(commentDownvotedIndex !== -1) { //there's already been a vote so double up and send that
+			valueChange = valueChange * 2;
+			$scope.user.comments_downvoted.splice(commentDownvotedIndex, 1); //remove from users array
+			if($scope.user.comments_downvoted.length === 0) { //needed so we can send an empty array
+				$scope.user.comments_downvoted = [""];
+			}
+		}
+
+		//put in the new item
+		if(valueChange > 0) {
+			$scope.user.comments_upvoted.push(comment_id);
+		} else if(valueChange < 0) {
+			$scope.user.comments_downvoted.push(comment_id);
+		}
+
+		Users.editUser($scope.user,
+			function(data) { //onSuccess
+				$scope.user = data;
+			},
+			function() {} //onError
+		);
+
+
+
+
+		Comments.voteComments(comment_id, valueChange,
 			function(data){ //on success
 				console.log("Vote comment finished: ");
 				console.log(data);
