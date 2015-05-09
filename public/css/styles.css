@@ -199,3 +199,12 @@ i {
   /* line 148, ../../sass/_base.scss */
   .episode-header h1 {
     margin-top: 0px; }
+
+/* line 153, ../../sass/_base.scss */
+.profile-comment-date {
+  margin-bottom: 0px; }
+
+/* line 157, ../../sass/_base.scss */
+.profile-comment-bottomline {
+  margin-top: 0px;
+  margin-bottom: 0px; }

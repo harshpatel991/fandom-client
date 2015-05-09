@@ -108,8 +108,9 @@
                 <div class="media-body media-middle">
 
                     <div>{{parentcomment.text}}</div>
-                    <h6>{{parentcomment.post_time | date:'medium'}}</h6>
-                    <a href="#/profile_comments/{{parentcomment.poster_id}}"><h6><i>{{user && parentcomment.poster_id == user._id ? "Me" : parentcomment.poster_name}}</i></h6></a>
+                    <a href="#/profile_comments/{{parentcomment.poster_id}}" class="display-inline-block"><h6><i>{{user && parentcomment.poster_id == user._id ? "Me" : parentcomment.poster_name}}</i></h6></a> -
+                    <h6 class="display-inline-block">{{parentcomment.post_time | date:'medium'}}</h6> <br>
+
 
                     <!-- reply to parent comment button -->
                     <button ng-click="clickReply($index)" class="btn btn-primary btn-sm" ng-show="profile">Reply</button>
@@ -137,9 +138,11 @@
                         <a ng-click="undoBy(childcomment._id,1)" ng-show="profile && user.comments_downvoted.indexOf(childcomment._id) !== -1" class="button-vote button-downvoted"><span class="glyphicon glyphicon-download"></span></a>
                     </div>
                     <div class="media-body media-middle">
-                        {{childcomment.text}}
-                        <h6>{{childcomment.post_time | date:'medium'}}</h6>
-                        <a href="#/profile_comments/{{childcomment.poster_id}}"><h6><i>{{user && childcomment.poster_id == user._id ? "Me" : childcomment.poster_name}}</i></h6></a>
+                        <div>{{childcomment.text}}</div>
+
+                        <a href="#/profile_comments/{{childcomment.poster_id}}" class="display-inline-block"><h6><i>{{user && childcomment.poster_id == user._id ? "Me" : childcomment.poster_name}}</i></h6></a> -
+                        <h6 class="display-inline-block">{{childcomment.post_time | date:'medium'}}</h6>
+
                     </div>
                 </div>
 

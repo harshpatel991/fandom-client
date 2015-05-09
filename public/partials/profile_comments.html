@@ -78,11 +78,11 @@
                                     <div class="text-center"><b>{{comment.points}}</b></div>
                                 </div>
                                 <div class="media-body media-middle">
-                                    <div>{{comment.text}}</div>
-                                    <h6>{{comment.post_time}}</h6>
+                                    <div><p>{{comment.text}}</p></div>
+                                    <h6 class="profile-comment-date">{{comment.post_time | date:'medium'}}</h6>
                                     <!--<i>{{comment.show_name}} ('{{comment.episode_name}}')</i>-->
-                                    <h6 style="display: inline-block"><a  href="#/episode/{{comment.episode_id}}/c{{comment._id}}">View Comment</a></h6> -
-                                    <h6 style="display: inline-block"><a href="#/episode/{{comment.episode_id}}"><i>{{comment.show_name}} ('{{comment.episode_name}}')</i></a></h6>
+                                    <h6 style="display: inline-block" class="profile-comment-bottomline"><a  href="#/episode/{{comment.episode_id}}/c{{comment._id}}">View Comment</a></h6> -
+                                    <h6 style="display: inline-block" class="profile-comment-bottomline"><a href="#/episode/{{comment.episode_id}}"><i>{{comment.show_name}} ('{{comment.episode_name}}')</i></a></h6>
                                 </div>
                             </div>
                         </div>
