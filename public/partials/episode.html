@@ -37,8 +37,18 @@
             Post a comment to start a conversation. </h2>
         </div>
 
+
+        <div class="input-group">
+        <label for="sorting">Order By</label>
+        <select id="sorting" ng-model="sorting" class="form-control">
+            <option value="points">Points</option>
+            <option value="post_time">Time</option>
+        </select>
+        </div>
+
+
         <!-- PRINT OUT PARENT COMMENTS -->
-        <div ng-repeat="parentcomment in comments" class="comment-parent" ng-if="parentcomment.parent_id == -1">
+        <div ng-repeat="parentcomment in comments | orderBy:sorting:-1" class="comment-parent" ng-if="parentcomment.parent_id == -1">
 
 
             <div class="media">
@@ -70,7 +80,7 @@
             </div>
 
             <!--PRINT OUT CHILD COMMENTS-->
-            <div ng-repeat="childcomment in comments" class="comment-child" ng-if="childcomment.parent_id == parentcomment._id">
+            <div ng-repeat="childcomment in comments | orderBy:sorting:-1" class="comment-child" ng-if="childcomment.parent_id == parentcomment._id">
 
                 <div class="media">
                     <div class="media-left media-middle">
