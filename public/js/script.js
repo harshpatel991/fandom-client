@@ -1,3 +1,1 @@
-$( document ).ready(function() {
-    $("#input-id").rating();
-});
+$(document).ready(function(){$("#input-id").rating()});

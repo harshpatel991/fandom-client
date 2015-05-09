@@ -36,6 +36,10 @@ fandomApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'partials/episode.html',
             controller: 'episodeController'
         }).
+        when('/episode/:ep_id/:comment_id', {
+            templateUrl: 'partials/episode.html',
+            controller: 'episodeController'
+        }).
         otherwise({
             redirectTo: '/home'
         });

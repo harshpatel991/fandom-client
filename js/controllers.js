@@ -42,8 +42,6 @@ fandomControllers.controller('profileUserController', ['$scope', '$routeParams',
 	$scope.changePassword = function(){
 		var newPassword = $scope.newPassword.valueOf();
 		var confirmPassword = $scope.confirmPassword.valueOf();
-		console.log(newPassword);
-		console.log(confirmPassword);
 		if (newPassword != confirmPassword || newPassword === undefined){
 			console.log('not equal');
 			return;
@@ -69,7 +67,6 @@ fandomControllers.controller('profileCommentsController', ['$scope', '$routePara
 		function (data) { //onSuccess
 			$scope.userComments = data;
 			$scope.userComments.sort(function(a,b){return new Date(b.post_time) - new Date(a.post_time);});
-			console.log(data);
 		},
 		function () { //onError
 			//TODO: error message
@@ -285,7 +282,6 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 
 	$scope.addToFavorites = function() {
 		$scope.user.favorites.push(showId);
-
 		saveUser();
 	};
 
@@ -333,7 +329,6 @@ fandomControllers.controller('showController', ['$scope', '$routeParams', '$http
 			}
 		}
 	}
-
 }]);
 
 
@@ -356,6 +351,7 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 	$scope.sorting = 'points';
 
 	var epId = $routeParams.ep_id;
+	var viewCommentId = $routeParams.comment_id;
 	$("#user-rating").rating(); //initialize user ratings
 
 	$('#user-rating').on('rating.change', function(event, value, caption) { //stars were clicked on
@@ -413,9 +409,24 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 	Comments.getComments(epId,
 		function(data){ //onSuccess
 			$scope.comments = data;
+			scrollToSelectedComment();
 		},
 		function(data) {} //onFailure
 	);
+
+	function scrollToSelectedComment(){
+
+		if (viewCommentId != undefined){
+			setTimeout(function() {
+				var $selectedComment = $("#" + viewCommentId);
+				if ($selectedComment != undefined && $selectedComment.offset() != undefined) {
+					$('html, body').animate({
+						scrollTop: $selectedComment.offset().top
+					}, 500);
+				}
+			}, 800);
+		}
+	}
 
 	$scope.showParentReplyBox = false;
 	$scope.showChildReplyBox=[];

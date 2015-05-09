@@ -96,7 +96,7 @@
         <div ng-repeat="parentcomment in comments | orderBy:sorting:-1" class="comment-parent" ng-if="parentcomment.parent_id == -1">
 
 
-            <div class="media">
+            <div class="media" id="c{{parentcomment._id}}">
                 <div class="media-left media-middle">
                     <a ng-click="points(parentcomment._id,1)" ng-show="!profile || user.comments_upvoted.indexOf(parentcomment._id) === -1" class="button-vote"><span class="glyphicon glyphicon-upload"></span></a>
                     <a ng-show="profile && user.comments_upvoted.indexOf(parentcomment._id) !== -1" class="button-vote button-upvoted"><span class="glyphicon glyphicon-upload"></span></a> <br>
@@ -127,7 +127,7 @@
             <!--PRINT OUT CHILD COMMENTS-->
             <div ng-repeat="childcomment in comments | orderBy:sorting:-1" class="comment-child" ng-if="childcomment.parent_id == parentcomment._id">
 
-                <div class="media">
+                <div class="media" id="c{{childcomment._id}}">
                     <div class="media-left media-middle">
                         <a ng-click="points(childcomment._id, 1)"  ng-show="!profile || user.comments_upvoted.indexOf(childcomment._id) === -1"  class="button-vote"><span class="glyphicon glyphicon-upload"></span></a>
                         <a ng-show="profile && user.comments_upvoted.indexOf(childcomment._id) !== -1" class="button-vote button-upvoted"><span class="glyphicon glyphicon-upload"></span></a> <br>
