@@ -121,7 +121,7 @@
             <!-- reply box -->
             <div ng-show="showChildReplyBox[$index]">
                 <textarea ng-model="replyBoxText[$index]" rows="8" class="form-control episode-textarea" placeholder="Your reply..."></textarea>
-                <button ng-click="submitReplyComment($index)" class="btn btn-primary btn-sm">Submit</button>
+                <button ng-click="submitReplyComment($index, parentcomment._id)" class="btn btn-primary btn-sm">Submit</button>
                 <button ng-click="hideCommentBox($index)" class="btn btn-danger btn-sm">Cancel</button>
             </div>
 

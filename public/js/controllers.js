@@ -526,10 +526,10 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 		);
 	};
 
-	$scope.submitReplyComment = function(id) { //adding a new reply to a comment
+	$scope.submitReplyComment = function(id, parentid) { //adding a new reply to a comment
 		var textBoxContent = $scope.replyBoxText[id];
-		var replyingTo = $scope.comments[id];
-		Comments.addComment(textBoxContent, $scope.user._id, $scope.user.local.email, $scope.episode._id, replyingTo._id, $scope.showName, $scope.episode.name,
+		var replyingTo = parentid;
+		Comments.addComment(textBoxContent, $scope.user._id, $scope.user.local.email, $scope.episode._id, replyingTo, $scope.showName, $scope.episode.name,
 			function(data) { //onSuccess
 				console.log("Add comment finished: " + data);
 				$scope.comments.unshift(data);
