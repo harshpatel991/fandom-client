@@ -57,7 +57,7 @@
         <h1>{{episode.name}}</h1>
         {{episode.summary}}
         <hr>
-        <b>Air Date: </b> {{episode.air_date}}
+        <b>Air Date: </b> {{episode.air_date | date:'medium'}}
         <br>
 
         <div ng-show="profile"><b>Your Rating: </b><input id="user-rating" type="number" class="rating" step="1" size="xs" data-show-caption="false" data-show-clear="false" data-size="xs" data-rtl="false"></div>
@@ -85,13 +85,12 @@
 
 
         <div class="input-group">
-        <label for="sorting">Order By</label>
-        <select id="sorting" ng-model="sorting" class="form-control">
-            <option value="points">Points</option>
-            <option value="post_time">Time</option>
-        </select>
+            <label for="sorting">Order By</label>
+            <select id="sorting" ng-model="sorting" class="form-control">
+                <option value="points">Points</option>
+                <option value="post_time">Time</option>
+            </select>
         </div>
-
 
         <!-- PRINT OUT PARENT COMMENTS -->
         <div ng-repeat="parentcomment in comments | orderBy:sorting:-1" class="comment-parent" ng-if="parentcomment.parent_id == -1">
@@ -108,7 +107,7 @@
                 <div class="media-body media-middle">
 
                     <div>{{parentcomment.text}}</div>
-                    <h6>{{parentcomment.post_time}}</h6>
+                    <h6>{{parentcomment.post_time | date:'medium'}}</h6>
                     <a href="#/profile/{{parentcomment.poster_id}}"><h6><i>{{user && parentcomment.poster_id == user._id ? "Me" : parentcomment.poster_name}}</i></h6></a>
 
                     <!-- reply to parent comment button -->
@@ -138,7 +137,7 @@
                     </div>
                     <div class="media-body media-middle">
                         {{childcomment.text}}
-                        <h6>{{childcomment.post_time}}</h6>
+                        <h6>{{childcomment.post_time | date:'medium'}}</h6>
                         <a href="#/profile/{{childcomment.poster_id}}"><h6><i>{{user && childcomment.poster_id == user._id ? "Me" : childcomment.poster_name}}</i></h6></a>
                     </div>
                 </div>

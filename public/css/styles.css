@@ -125,17 +125,21 @@ i {
     border-color: #DBDBDB; }
 
 /* line 75, ../../sass/_base.scss */
+.episode-list-item {
+  display: inline-block; }
+
+/* line 79, ../../sass/_base.scss */
 .episode-textarea {
   margin-top: 10px;
   margin-bottom: 5px; }
 
-/* line 80, ../../sass/_base.scss */
+/* line 84, ../../sass/_base.scss */
 .comment-parent {
   background-color: rgba(232, 232, 232, 0.3);
   padding: 10px 10px;
   margin-top: 15px; }
 
-/* line 86, ../../sass/_base.scss */
+/* line 90, ../../sass/_base.scss */
 .comment-child {
   margin-top: 10px;
   margin-left: 50px;
@@ -143,42 +147,42 @@ i {
   padding: 10px 10px;
   background-color: rgba(216, 216, 216, 0.3); }
 
-/* line 95, ../../sass/_base.scss */
+/* line 99, ../../sass/_base.scss */
 .comment-user {
   background-color: rgba(216, 216, 216, 0.3);
   padding: 10px 10px;
   margin-top: 15px; }
 
-/* line 101, ../../sass/_base.scss */
+/* line 105, ../../sass/_base.scss */
 .button-vote {
   margin-top: 5px;
   font-size: 2em;
   color: #646464; }
 
-/* line 107, ../../sass/_base.scss */
+/* line 111, ../../sass/_base.scss */
 .button-vote:hover {
   color: #3f3f3f; }
 
-/* line 111, ../../sass/_base.scss */
+/* line 115, ../../sass/_base.scss */
 .button-upvoted {
   color: #f0592c; }
 
-/* line 115, ../../sass/_base.scss */
+/* line 119, ../../sass/_base.scss */
 .button-upvoted:hover {
   color: #f0592c; }
 
-/* line 119, ../../sass/_base.scss */
+/* line 123, ../../sass/_base.scss */
 .button-downvoted {
   color: #00b3ee; }
 
-/* line 123, ../../sass/_base.scss */
+/* line 127, ../../sass/_base.scss */
 .button-downvoted:hover {
   color: #00b3ee; }
 
-/* line 127, ../../sass/_base.scss */
+/* line 131, ../../sass/_base.scss */
 .display-inline-block {
   display: inline-block; }
 
-/* line 131, ../../sass/_base.scss */
+/* line 135, ../../sass/_base.scss */
 .red-text {
   color: #ff0000; }

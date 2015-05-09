@@ -224,6 +224,7 @@ fandomControllers.controller('homeController', ['$scope', '$http', '$window', 'S
 
 	$scope.search = new Object(); //the object used by search genre filter
 	$scope.search['genres'] = '';
+	$scope.sorting = 'name';
 
 
 	var headerImages = ['header-community.jpg', 'header-got.jpg', 'header-twd.jpg'];
@@ -519,8 +520,10 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 	};
 
 	$scope.points = function(comment_id, valueChange){
-		//check if this user has already upvoted/downvoted, remove if so
+		if($scope.profile === false) //not logged in
+			return;
 
+		//check if this user has already upvoted/downvoted, remove if so
 		var commentUpvotedIndex = $scope.user.comments_upvoted.indexOf(comment_id);
 		var commentDownvotedIndex = $scope.user.comments_downvoted.indexOf(comment_id);
 
@@ -577,6 +580,9 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 }]);
 
 function addUserToScope($scope, Users, $window, Shows, callback) {
+	$scope.profile = false;
+	$scope.user = undefined;
+
 	$scope.logout = function () {
 		Users.logout(
 			function(data) { //onSuccess
