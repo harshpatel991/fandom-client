@@ -425,17 +425,17 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 		ratingPair[epId] = value
 		$scope.user.episodes_ratings.push(ratingPair);
 
-		Users.editUser($scope.user, //Update the user
-			function(){}, //onSuccess, don't need to do anything here,
-			function(){} //onError
-		);
-
 		//Update the episode
 		Episode.editRating($scope.episode._id, (oldRatingValue === 0), value-oldRatingValue, //add difference between rating and increase
 			function(data) { //onSuccess
-				$scope.episode.rating_sum = data.rating_sum;
-				$scope.episode.rating_count = data.rating_count;
-				$("#average-rating").rating('update', $scope.episode.rating_sum/$scope.episode.rating_count);
+				Users.editUser($scope.user, //Update the user
+					function(){
+						$scope.episode.rating_sum = data.rating_sum;
+						$scope.episode.rating_count = data.rating_count;
+						$("#average-rating").rating('update', $scope.episode.rating_sum/$scope.episode.rating_count);
+					}, //onSuccess, don't need to do anything here,
+					function(){} //onError
+				);
 			},
 			function() {} //onError
 		);
