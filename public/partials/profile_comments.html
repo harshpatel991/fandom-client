@@ -1,32 +1,36 @@
 <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-12 col-xs-12">
-<h1>Comments</h1>
+        <h1>Comments</h1>
 
-<!-- PROFILE INFORMATION -->
-<div class="panel panel-default">
-    <div class="panel-body">
-        <div role="tabpanel">
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation"><a href="#/profile/{{selectedUserId}}">Profile</a></li>
-                <li role="presentation" class="active"><a href="#/profile_comments/{{selectedUserId}}">Comments</a></li>
-                <li role="presentation"><a href="#/profile_favorites/{{selectedUserId}}">Favorites</a></li>
-            </ul>
+        <!-- PROFILE INFORMATION -->
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div role="tabpanel">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation"><a href="#/profile/{{selectedUserId}}">Profile</a></li>
+                        <li role="presentation" class="active"><a
+                                href="#/profile_comments/{{selectedUserId}}">Comments</a></li>
+                        <li role="presentation"><a href="#/profile_favorites/{{selectedUserId}}">Favorites</a></li>
+                    </ul>
 
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <div style="border-bottom: 2px solid #000000" ng-repeat="comment in userComments">
-                    <div>
-                        <div>{{comment.text}}</div>
-                        <div>{{comment.post_time}}</div>
-                        <br>
-
-                        <div><a href="#/episode/{{comment.episode_id}}">View Comment</a></div>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div ng-repeat="comment in userComments" class="comment-user">
+                            <div class="media">
+                                <div class="media-left media-middle">
+                                    <div class="text-center"><b>{{comment.points}}</b></div>
+                                </div>
+                                <div class="media-body media-middle">
+                                    <div>{{comment.text}}</div>
+                                    <h6>{{comment.post_time}}</h6>
+                                    <a href="#/episode/{{comment.episode_id}}"><h6>View - <i>{{comment.show_name}} ('{{comment.episode_name}}')</i></h6></a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-        </div>
 </div>

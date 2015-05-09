@@ -7,6 +7,10 @@ h1 {
   color: lighten($orange, 25);
 }
 
+i {
+  font-style: italic;
+}
+
 .test {
   font-size: 1.2rem;
   color: $blue;
@@ -83,6 +87,12 @@ h1 {
 
   padding: 10px 10px;
   background-color: rgba(216, 216, 216, 0.30);
+}
+
+.comment-user {
+  background-color: rgba(216, 216, 216, 0.30);
+  padding: 10px 10px;
+  margin-top: 15px;
 }
 
 .button-vote {

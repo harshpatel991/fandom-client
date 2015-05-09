@@ -111,14 +111,14 @@ angular.module('fandomServices', [])
     })
     .factory( 'CommentsService', function($http) {
         return {
-            addComment: function(commentText, poster, episodeId, parentId, onSuccess, onError) {
+            addComment: function(commentText, posterId, posterName, episodeId, parentId, showName, episodeName, onSuccess, onError) {
                 var postTime = Date();
 
                 $http({
                     method: 'POST',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     url: apiLocation + '/show_comments/' + episodeId,
-                    data: $.param({text: commentText, poster: poster, post_time: postTime, parent_id: parentId })
+                    data: $.param({text: commentText, poster_id: posterId, poster_name: posterName, post_time: postTime, parent_id: parentId, show_name: showName, episode_name: episodeName })
                 })
                 .success(function(data, status, headers, config) {
                     onSuccess(data["data"]);

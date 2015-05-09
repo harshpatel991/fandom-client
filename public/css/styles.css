@@ -62,24 +62,28 @@ h1 {
   color: #ef7e60; }
 
 /* line 10, ../../sass/_base.scss */
+i {
+  font-style: italic; }
+
+/* line 14, ../../sass/_base.scss */
 .test {
   font-size: 1.2rem;
   color: #2176C7; }
 
-/* line 15, ../../sass/_base.scss */
+/* line 19, ../../sass/_base.scss */
 .show-image {
   max-height: 100%;
   max-width: 100%; }
 
-/* line 20, ../../sass/_base.scss */
+/* line 24, ../../sass/_base.scss */
 .childComment {
   padding-left: 40px; }
 
-/* line 24, ../../sass/_base.scss */
+/* line 28, ../../sass/_base.scss */
 .episode-list-item {
   display: inline-block; }
 
-/* line 28, ../../sass/_base.scss */
+/* line 32, ../../sass/_base.scss */
 .home-header-image {
   -webkit-transition: all 0.7s;
   -moz-transition: all 0.7s;
@@ -92,44 +96,44 @@ h1 {
   padding: 25px;
   color: #ffffff;
   background-position: center; }
-  /* line 38, ../../sass/_base.scss */
+  /* line 42, ../../sass/_base.scss */
   .home-header-image h1 {
     font-size: 8vmax;
     color: #ffffff;
     font-weight: 700;
     text-shadow: 1px 1px rgba(30, 30, 30, 0.3); }
-  /* line 45, ../../sass/_base.scss */
+  /* line 49, ../../sass/_base.scss */
   .home-header-image h2 {
     text-shadow: 2px 2px rgba(30, 30, 30, 0.3); }
-  /* line 48, ../../sass/_base.scss */
+  /* line 52, ../../sass/_base.scss */
   .home-header-image h3 {
     text-shadow: 2px 2px rgba(30, 30, 30, 0.3); }
 
-/* line 53, ../../sass/_base.scss */
+/* line 57, ../../sass/_base.scss */
 .show-header {
   background-color: #eee;
   padding: 15px 0px;
   margin-top: 10px;
   margin-bottom: 15px; }
-  /* line 59, ../../sass/_base.scss */
+  /* line 63, ../../sass/_base.scss */
   .show-header h1 {
     margin-top: 0px; }
-  /* line 63, ../../sass/_base.scss */
+  /* line 67, ../../sass/_base.scss */
   .show-header hr {
     border-color: #DBDBDB; }
 
-/* line 68, ../../sass/_base.scss */
+/* line 72, ../../sass/_base.scss */
 .episode-textarea {
   margin-top: 10px;
   margin-bottom: 5px; }
 
-/* line 73, ../../sass/_base.scss */
+/* line 77, ../../sass/_base.scss */
 .comment-parent {
   background-color: rgba(232, 232, 232, 0.3);
   padding: 10px 10px;
   margin-top: 15px; }
 
-/* line 79, ../../sass/_base.scss */
+/* line 83, ../../sass/_base.scss */
 .comment-child {
   margin-top: 10px;
   margin-left: 50px;
@@ -137,28 +141,34 @@ h1 {
   padding: 10px 10px;
   background-color: rgba(216, 216, 216, 0.3); }
 
-/* line 88, ../../sass/_base.scss */
+/* line 92, ../../sass/_base.scss */
+.comment-user {
+  background-color: rgba(216, 216, 216, 0.3);
+  padding: 10px 10px;
+  margin-top: 15px; }
+
+/* line 98, ../../sass/_base.scss */
 .button-vote {
   margin-top: 5px;
   font-size: 2em;
   color: #646464; }
 
-/* line 94, ../../sass/_base.scss */
+/* line 104, ../../sass/_base.scss */
 .button-vote:hover {
   color: #3f3f3f; }
 
-/* line 98, ../../sass/_base.scss */
+/* line 108, ../../sass/_base.scss */
 .button-upvoted {
   color: #f0592c; }
 
-/* line 102, ../../sass/_base.scss */
+/* line 112, ../../sass/_base.scss */
 .button-upvoted:hover {
   color: #f0592c; }
 
-/* line 106, ../../sass/_base.scss */
+/* line 116, ../../sass/_base.scss */
 .button-downvoted {
   color: #00b3ee; }
 
-/* line 110, ../../sass/_base.scss */
+/* line 120, ../../sass/_base.scss */
 .button-downvoted:hover {
   color: #00b3ee; }

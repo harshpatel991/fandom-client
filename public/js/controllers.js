@@ -71,7 +71,7 @@ fandomControllers.controller('profileUserController', ['$scope', '$routeParams',
 
 	$scope.changePassword = function(){
 		var newPassword = $scope.newPassword.valueOf();
-		var confirmPassword = $scope.confirmPassword.valueOf()
+		var confirmPassword = $scope.confirmPassword.valueOf();
 		console.log(newPassword);
 		console.log(confirmPassword);
 		if (newPassword != confirmPassword || newPassword === undefined){
@@ -97,6 +97,7 @@ fandomControllers.controller('profileCommentsController', ['$scope', '$routePara
 		function (data) { //onSuccess
 			$scope.userComments = data;
 			$scope.userComments.sort(function(a,b){return new Date(b.post_time) - new Date(a.post_time);});
+			console.log(data);
 		},
 		function () { //onError
 			//TODO: error message
@@ -412,15 +413,15 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 			$scope.episode = data;
 			$("#average-rating").val($scope.episode.rating_sum/$scope.episode.rating_count);
 			$("#average-rating").rating();
-
-			if(data.img_url === "") { //if the episode doesn't have an image, load the shows image
-				Shows.getShow($scope.episode.show_id,
-					function(show) { //onSuccess
+			Shows.getShow($scope.episode.show_id,
+				function(show) { //onSuccess
+					$scope.showName = show.name;
+					if(data.img_url === "") { //if the episode doesn't have an image, load the shows image
 						$scope.episode.img_filename = show.img_filename;
-					},
-					function() {} //onError
-				);
-			}
+					}
+				},
+				function() {} //onError
+			);
 		},
 		function() {} //onError
 	);
@@ -465,7 +466,8 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 
 	$scope.submitParentComment = function() { //adding a new parent level comment
 		var textBoxContent = $scope.parentReplyBoxText;
-		Comments.addComment(textBoxContent, $scope.user._id, $scope.episode._id, -1,
+		//function(commentText, posterId, posterName, episodeId, parentId, showName, episodeName, onSuccess, onError)
+		Comments.addComment(textBoxContent, $scope.user._id, $scope.user.local.email, $scope.episode._id, -1, $scope.showName, $scope.episode.name,
 			function(data) { //onSuccess
 				console.log("Add parent comment finished: " + data);
 				$scope.comments.unshift(data); //add to begining of array
@@ -480,7 +482,7 @@ fandomControllers.controller('episodeController', ['$scope', '$routeParams', '$w
 	$scope.submitReplyComment = function(id) { //adding a new reply to a comment
 		var textBoxContent = $scope.replyBoxText[id];
 		var replyingTo = $scope.comments[id];
-		Comments.addComment(textBoxContent, $scope.user._id, $scope.episode._id, replyingTo._id,
+		Comments.addComment(textBoxContent, $scope.user._id, $scope.user.local.email, $scope.episode._id, replyingTo._id, $scope.showName, $scope.episode.name,
 			function(data) { //onSuccess
 				console.log("Add comment finished: " + data);
 				$scope.comments.unshift(data);

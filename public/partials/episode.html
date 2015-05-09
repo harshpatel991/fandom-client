@@ -53,6 +53,7 @@
 
                     <div>{{parentcomment.text}}</div>
                     <h6>{{parentcomment.post_time}}</h6>
+                    <a href="#/profile/{{parentcomment.poster_id}}"><h6><i>{{user && parentcomment.poster_id == user._id ? "Me" : parentcomment.poster_name}}</i></h6></a>
 
                     <!-- reply to parent comment button -->
                     <button ng-click="clickReply($index)" class="btn btn-primary btn-sm" ng-show="profile">Reply</button>
@@ -82,6 +83,7 @@
                     <div class="media-body media-middle">
                         {{childcomment.text}}
                         <h6>{{childcomment.post_time}}</h6>
+                        <a href="#/profile/{{childcomment.poster_id}}"><h6><i>{{user && childcomment.poster_id == user._id ? "Me" : childcomment.poster_name}}</i></h6></a>
                     </div>
                 </div>
 
